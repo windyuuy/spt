@@ -40,7 +40,6 @@ function get_max_repeat_times(compare,lineinfo,count_ranges)
 
 		local inc_sub_rawline_list={}
 		local str_obj
-		--while(max=='+' or repeat_times_copy<max)do
 		while(bigger_than(max,repeat_times_copy))do
 			matched,str_obj=compare(lineinfo_copy)
 			if(matched==true)then
@@ -85,12 +84,6 @@ function get_max_repeat_times(compare,lineinfo,count_ranges)
 end
 
 function list_relative(checker)
---	matched=result.matched
---	if(result.matched)then
---		sub_result_list[checker.alias]=result
---		sub_rawline_list[#sub_rawline_list+1]=result.rawline
---		lineinfo_back:skip_by(result.rawline)
---	end
 end
 
 function compare_func()
@@ -143,14 +136,6 @@ function get_compare_func(self,sub_result_list)
 
 	return compare
 end
---
---function get_compare_func(self,sub_result_list)
---	local function compare(lineinfo)
---		return false,''
---	end
---
---	return compare
---end
 
 function check(self,lineinfo,count_ranges)
 
