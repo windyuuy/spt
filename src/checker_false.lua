@@ -20,6 +20,17 @@ local function little_than(n1,n2)
 	return bigger_than(n2,n1)
 end
 
+local function convert_name(name)
+	local name='$'..name:sub(9)
+	return name
+end
+
+function _record_check_result(sub_result_list,result)
+	local checker=result.checker
+	sub_result_list[checker.alias]=result
+	if(not sub_result_list[checker.name])then sub_result_list[checker.name]=result end
+end
+
 function get_max_repeat_times(compare,lineinfo,count_ranges)
 	local repeat_times=0
 	local sub_rawline_list={}
@@ -40,7 +51,6 @@ function get_max_repeat_times(compare,lineinfo,count_ranges)
 
 		local inc_sub_rawline_list={}
 		local str_obj
-		--while(max=='+' or repeat_times_copy<max)do
 		while(bigger_than(max,repeat_times_copy))do
 			matched,str_obj=compare(lineinfo_copy)
 			if(matched==true)then
@@ -85,12 +95,6 @@ function get_max_repeat_times(compare,lineinfo,count_ranges)
 end
 
 function list_relative(checker)
---	matched=result.matched
---	if(result.matched)then
---		sub_result_list[checker.alias]=result
---		sub_rawline_list[#sub_rawline_list+1]=result.rawline
---		lineinfo_back:skip_by(result.rawline)
---	end
 end
 
 function compare_func()
@@ -143,14 +147,6 @@ function get_compare_func(self,sub_result_list)
 
 	return compare
 end
---
---function get_compare_func(self,sub_result_list)
---	local function compare(lineinfo)
---		return false,''
---	end
---
---	return compare
---end
 
 function check(self,lineinfo,count_ranges)
 
@@ -184,10 +180,10 @@ function create(self,checker_list,alias,preset_count_ranges)
 		checker_list=checker_list,
 
 		check=self.check,
-		alias=alias or self._NAME,
+		alias=alias or convert_name(self._NAME),
 		preset_count_ranges=preset_count_ranges or {1},
 
-		name=self._NAME,
+		name=convert_name(self._NAME),
 		model=self,
 	}
 end

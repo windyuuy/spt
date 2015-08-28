@@ -1,7 +1,7 @@
---- @brief µ÷ÊÔÊ±´òÓ¡±äÁ¿µÄÖµ
---- @param data Òª´òÓ¡µÄ×Ö·û´®
---- @param [max_level] tableÒªÕ¹¿ª´òÓ¡µÄ¼ÆÊı£¬Ä¬ÈÏnil±íÊ¾È«²¿Õ¹¿ª
---- @param [prefix] ÓÃÓÚÔÚµİ¹éÊ±´«µİËõ½ø£¬¸Ã²ÎÊı²»¹©ÓÃ»§Ê¹ÓÃÓÚ
+--- @brief ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Ó¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+--- @param data Òªï¿½ï¿½Ó¡ï¿½ï¿½ï¿½Ö·ï¿½
+--- @param [max_level] tableÒªÕ¹ï¿½ï¿½ï¿½ï¿½Ó¡ï¿½Ä¼ï¿½ï¿½ï¿½Ä¬ï¿½ï¿½nilï¿½ï¿½Ê¾È«ï¿½ï¿½Õ¹ï¿½ï¿½
+--- @param [prefix] ï¿½ï¿½ï¿½ï¿½ï¿½Úµİ¹ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã²ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½
 --- @ref http://dearymz.blog.163.com/blog/static/205657420089251655186/
 function var_dump(data, max_level, prefix)
 	assert(var_dump~=print,'')
@@ -44,4 +44,8 @@ end
 
 function vdump(data, max_level)
 	var_dump(data, max_level or 5)
+end
+
+function rdump(data,max_level)
+	var_dump(data, max_level or 2)
 end

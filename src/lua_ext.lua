@@ -38,4 +38,15 @@ function copy_module(t1,t2)
 
 end
 
+function string.split(s,d)
+	local lines={}
+	if(string.find(s,'([^'..d..']+)')~=1)then
+		lines[#lines+1]=''
+	end
+	for w in string.gmatch(s,'([^'..d..']+)')do
+		lines[#lines+1]=w
+	end
+	return lines
+end
+
 requirelist({'dump'})
