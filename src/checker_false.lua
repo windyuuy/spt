@@ -167,7 +167,7 @@ function check(self,lineinfo,count_ranges)
 		sub_rawline_list=sub_rawline_list,
 		repeat_times=repeat_times,
 		sub_result_list=sub_result_list,
-		lineinfo_snapshot=lineinfo_copy,
+		lineinfo_snapshot=lineinfo_copy:snapshot(),
 	}
 
 

@@ -16,6 +16,7 @@ local function main()
 	local i_result=r_index(result)
 	local rline=i_result:index('$line.kljl')
 	local rworld=i_result:index('$line.wd')
+	rdump(rworld,3)
 	local cc=join_results({rline,rworld,'kwelk',rworld})
 	print(cc)
 end

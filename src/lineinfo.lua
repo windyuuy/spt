@@ -11,16 +11,27 @@ function clone(self)
 	for k,v in pairs(self)do
 		self_copy[k]=v
 	end
-	
+
 	return self_copy
 end
 
 function skip_by(self,str_obj)
 	local len=str_obj:len()
 	self.curpos=self.curpos+len
-	if(self.curpos>self.endpos)then
+	if(self.curpos>self.endpos+1)then
+		self.overflowpos=self.curpos
 		self.curpos=self.endpos+1
 	end
+end
+
+local function snapshot(self)
+	local s=table.clone(self)
+	for k,v in pairs(s) do
+		if(type(v)=='function')then
+			s[k]=nil
+		end
+	end
+	return s
 end
 
 function create(line)
@@ -32,5 +43,6 @@ function create(line)
 		compare=compare,
 		clone=clone,
 		skip_by=skip_by,
+		snapshot=snapshot,
 	}
 end
