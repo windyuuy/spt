@@ -22,5 +22,3 @@ local function main()
 end
 
 main()
-
--- 需要一个结果索引封装
