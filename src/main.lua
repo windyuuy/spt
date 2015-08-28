@@ -10,7 +10,7 @@ local function main()
 	local ch_hallo=ch_str('hallo')
 	local recursion={}
 	local ch_line=checker_line:create({ch_hello,checker_or:create({recursion,checker_not:create({ch_hello})})})
-	setmetatable(recursion,{__index=ch_line})
+	set_recursor(recursion,ch_line)
 	
 	-- ch_line=$line{['hello'],$or{$$ch_line,$not{ch_hello}}}
 	

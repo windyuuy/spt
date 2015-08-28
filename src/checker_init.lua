@@ -7,6 +7,8 @@ checker_or=load('checker_or')
 checker_and=load('checker_and')
 checker_not=load('checker_not')
 
+require('checker_recursion')
+
 result_indexer=load('result_indexer')
 
 require('join_funcs')
