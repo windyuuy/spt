@@ -10,7 +10,7 @@ string = '(+ a b (+ c (+e f) k))'
 op = $or{'=' '&' '+'}
 sump = $line{bracket op $or{$$sump word}[3,(4,5),(7,+)] un_bracket[1]}
 
-result = @involve<string,sump>
+result = @check<string,sump>
 
 line = result.@rawline<>
 line = result.@repeat_times<>
