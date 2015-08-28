@@ -1,11 +1,13 @@
 
 require('checker_preload')
 
-checker_is=load("checker_is")
-checker_line=load("checker_line")
-checker_or=load("checker_or")
+checker_is=load('checker_is')
+checker_line=load('checker_line')
+checker_or=load('checker_or')
+checker_and=load('checker_and')
+checker_not=load('checker_not')
 
-result_indexer=load("result_indexer")
+result_indexer=load('result_indexer')
 
 require('join_funcs')
 

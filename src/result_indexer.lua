@@ -11,8 +11,11 @@ function index(self,node_path,...)
 	for _,alias in ipairs(aliases) do
 		cur_node=node.sub_result_list[alias]
 		node=cur_node
+		if(node==nil)then break end
 	end
 
+	if(node==nil)then return nil end
+	
 	local attr
 	if(attr_name)then
 		attr=node[attr_name]
