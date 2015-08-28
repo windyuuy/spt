@@ -3,8 +3,12 @@ module('result_indexer',package.seeall)
 
 function index(self,node_path,...)
 	local aliases=string.split(node_path,'.')
-	local end_alias,attr_name=unpack(string.split(aliases[#aliases],'@'))
-	aliases[#aliases]=end_alias
+	--	local end_alias,attr_name=unpack(string.split(aliases[#aliases],'@'))
+	local attr_name
+	if(aliases[#aliases]:sub(1,1)=='@')then
+		attr_name=aliases[#aliases]:sub(2)
+		aliases[#aliases]=nil
+	end
 
 	local node=self
 	local cur_node
@@ -15,7 +19,7 @@ function index(self,node_path,...)
 	end
 
 	if(node==nil)then return nil end
-	
+
 	local attr
 	if(attr_name)then
 		attr=node[attr_name]
@@ -52,5 +56,6 @@ function create(self,result,alias)
 	setmetatable(node,{__index=result_indexer})
 	return node
 end
+
 
 
