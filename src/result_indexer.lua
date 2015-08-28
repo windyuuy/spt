@@ -30,7 +30,7 @@ function index(self,node_path,...)
 	if(attr_name~=nil)then
 		return attr
 	else
-		return node
+		return result_indexer:create(node)
 	end
 
 end
@@ -39,6 +39,7 @@ function create(self,result,alias)
 	alias=alias or result.checker.alias
 	local name =result.checker.name or alias
 	local node={
+		result=result,
 		sub_result_list={
 			[name]=result,
 			[alias]=result,

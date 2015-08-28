@@ -14,7 +14,10 @@ local function main()
 	local result=ch_line2:check(info_hello,{1})
 --	vdump(result)
 	local i_result=r_index(result)
-	rdump(i_result:index('$line.wd@rawline'))
+	local rline=i_result:index('$line.kljl')
+	local rworld=i_result:index('$line.wd')
+	local cc=join_results({rline,rworld,'kwelk',rworld})
+	print(cc)
 end
 
 main()

@@ -7,6 +7,8 @@ checker_or=load("checker_or")
 
 result_indexer=load("result_indexer")
 
+require('join_funcs')
+
 function ch_str(str,...)
 	local ch_hello=checker_is:create(str,...)
 	return ch_hello
