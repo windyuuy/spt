@@ -1,4 +1,5 @@
 
+
 module('result_indexer',package.seeall)
 
 function index(self,node_path,...)
@@ -37,25 +38,46 @@ function index(self,node_path,...)
 	if(attr_name~=nil)then
 		return attr
 	else
-		return result_indexer:create(node)
+		--		return result_indexer:create(node)
+		return node
 	end
 
 end
 
-function create(self,result,alias)
-	alias=alias or result.checker.alias
-	local name =result.checker.name or alias
-	local node={
-		result=result,
-		sub_result_list={
-			[name]=result,
-			[alias]=result,
-		},
-		index=self.index,
-	}
-	setmetatable(node,{__index=result_indexer})
-	return node
+function raw_index(self)
+	local raw_list={}
+	for k,v in pairs(self.sub_result_list) do
+		raw_list[k]=v.rawline
+	end
+	return raw_list
 end
 
+--
+--function add_result(self,result,alias)
+--	self.sub_result_list[alias]=result
+--end
+--
+--function create(self,result,alias)
+--	local node
+--	if(result)then
+--		alias=alias or result.checker.alias
+--		assert(alias,'')
+--		--	local name =result.checker.name or alias
+--		node={
+----			result=result,
+--			sub_result_list={
+--				--			[name]=result,
+--				[alias]=result,
+--			},
+--			index=self.index,
+--		}
+--	else
+--		node={}
+--	end
+--	setmetatable(node,{__index=result_indexer})
+--	return node
+--end
 
+--result_proto.index=index
 
+table.merge(result_proto,result_indexer)

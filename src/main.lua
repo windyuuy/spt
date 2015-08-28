@@ -1,3 +1,4 @@
+
 require('lua_ext')
 
 require('checker_init')
@@ -14,13 +15,17 @@ local function main()
 	local ch_line2=checker_line:create({ch_line,ch_blanket,ch_world},'kjlk')
 	local info_hello=lineinfo.create('hellohellohallohellohellohellohellohellohello world')
 	local result=ch_line2:check(info_hello,{1})
---	vdump(result)
-	local i_result=r_index(result)
-	local rline=i_result:index('$line.kljl.@rawline')
-	local rworld=i_result:index('$line.wd')
+	vdump(result)
+--	local i_result=r_index(result)
+	local rline=result:index('kljl.@rawline')
+	local rworld=result:index('wd')
 	rdump(rworld,3)
 	local cc=join_results({rline,rworld,'kwelk',rworld})
 	print(cc)
+	
+	local rs=result:index('kljl'):raw_index()
+	rdump(rs)
+	
 end
 
 main()

@@ -1,4 +1,6 @@
 
+result_proto={}
+
 module('checker_false',package.seeall)
 
 local function bigger_than(n1,n2)
@@ -170,6 +172,7 @@ function check(self,lineinfo,count_ranges)
 		lineinfo_snapshot=lineinfo_copy:snapshot(),
 	}
 
+	setmetatable(result,{__index=result_proto})
 
 	self.t_result=result
 	return result
