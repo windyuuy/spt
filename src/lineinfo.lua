@@ -34,7 +34,11 @@ local function snapshot(self)
 	return s
 end
 
-function create(line)
+function cutline(self,pos)
+	return self.rawline:sub(self.curpos,pos and self.curpos+pos-1)
+end
+
+function create(self,line)
 	return {
 		rawline=line,
 		curpos=1,
@@ -44,5 +48,6 @@ function create(line)
 		clone=clone,
 		skip_by=skip_by,
 		snapshot=snapshot,
+		cutline=cutline,
 	}
 end

@@ -37,19 +37,31 @@ function get_max_repeat_times(compare,lineinfo,count_ranges)
 	local repeat_times=0
 	local sub_rawline_list={}
 
+	for k,v in ipairs(count_ranges)do
+		local max,min
+		if(type(v)=='table')then
+		elseif(type(v)=='number')then
+			max=v
+			min=v
+			count_ranges[k]={min,max}
+		elseif(type(v)=='string')then
+			if(v=='n')then
+				max='+'
+				min='-'
+			end
+			count_ranges[k]={min,max}
+		end
+
+	end
+
 	local lineinfo_copy=lineinfo:clone()
 	local repeat_times_copy=repeat_times
 	local matched
 	local last_statu={matched=false,repeat_time=0}
 	for _,v in ipairs(count_ranges)do
 		local max,min
-		if(type(v)=='number')then
-			max=v
-			min=v
-		else
-			max=v[2]
-			min=v[1]
-		end
+		max=v[2]
+		min=v[1]
 
 		local inc_sub_rawline_list={}
 		local str_obj
@@ -178,7 +190,21 @@ function check(self,lineinfo,count_ranges)
 	return result
 end
 
-function create(self,checker_list,alias,preset_count_ranges)
+local function _create(self,checker_list,alias,preset_count_ranges)
+	local function create(self,alias,preset_count_ranges)
+		if(preset_count_ranges==nil and type(alias)=='table')then
+			alias=nil
+			preset_count_ranges=alias
+		end
+
+		local copyi={}
+		table.copy(copyi,self)
+		setmetatable(copyi,getmetatable(self))
+		copyi.alias=alias or self.alias
+		copyi.preset_count_ranges=preset_count_ranges or self.preset_count_ranges
+		return copyi
+	end
+
 	return {
 		checker_list=checker_list,
 
@@ -188,5 +214,14 @@ function create(self,checker_list,alias,preset_count_ranges)
 
 		name=convert_name(self._NAME),
 		model=self,
+		create=create,
 	}
+end
+
+function create(self,checker_list,alias,preset_count_ranges)
+	if(preset_count_ranges==nil and type(alias)=='table')then
+		preset_count_ranges=alias
+		alias=nil
+	end
+	return _create(self,checker_list,alias,preset_count_ranges)
 end

@@ -14,7 +14,7 @@ local function main()
 	
 	-- ch_line=$line{[/hello/],$or{$$ch_line,$not{ch_hello}}}
 	
-	local info_hello=lineinfo.create('hellohellohellohelloworld')
+	local info_hello=lineinfo:create('hellohellohellohelloworld')
 	
 	local result=ch_line:check(info_hello)
 	print(result.rawline)

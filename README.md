@@ -72,3 +72,5 @@ ion,checker_not:create({ch_hello})})})
 	10.loadstring
 	11.loadfile
 	
+
+frame-run{checker->parser->runtime-coder}
