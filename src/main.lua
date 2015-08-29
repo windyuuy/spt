@@ -9,10 +9,10 @@ local function main()
 	local ch_blanket=ch_str(' ','bk')
 	local ch_hallo=ch_str('hallo')
 	local recursion=checker_recurse:create()
-	local ch_line=checker_line:create({ch_hello,checker_or:create({recursion,checker_not:create({ch_hello})})})
+	local ch_line=checker_line:create({ch_str('hello'),checker_or:create({recursion,checker_not:create({ch_hello})})})
 	recursion:set_recursor(ch_line)
 	
-	-- ch_line=$line{['hello'],$or{$$ch_line,$not{ch_hello}}}
+	-- ch_line=$line{[/hello/],$or{$$ch_line,$not{ch_hello}}}
 	
 	local info_hello=lineinfo.create('hellohellohellohelloworld')
 	
@@ -20,5 +20,5 @@ local function main()
 	print(result.rawline)
 
 end
-
+ 
 main()
