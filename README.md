@@ -14,7 +14,7 @@ result = @check<string,sump>
 
 line = result.@rawline<>
 line = result.@repeat_times<>
-line = result.$line.bracket
+line = result.bracket
 
 // 预定义关系符：$line $or $not $is $and
 // 关系符=符号引用+递归调用+循环调用计数
@@ -43,4 +43,18 @@ line = result.$line.bracket
 结果索引封装：
 	1.结果节点索引
 	2.结果节点属性索引法一套
+
+
+解释器规则：
+	1.$and{...} -> checker_and({...})
+	2.[/../ /../] -> ch_str('..') ch_str('..')
+	3.递归
+		local recursion=checker_recurse:create()
+		local ch_line=checker_line:create({ch_str('hello'),checker_or:create({recurs
+ion,checker_not:create({ch_hello})})})
+		recursion:set_recursor(ch_line)
+	4.='...' -> ='...'
+	5.=[/.../] -> =ch_str('...')
+	6.=@check<checker,lineinfo,...> -> =checker_check(checker,lineinfo,...)
+	7.=result.... -> =result:index('...')
 	
