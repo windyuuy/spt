@@ -25,7 +25,7 @@ function skip_by(self,str_obj)
 end
 
 local function snapshot(self)
-	local s=table.clone(self)
+	local s=table.makeclone(self)
 	for k,v in pairs(s) do
 		if(type(v)=='function')then
 			s[k]=nil

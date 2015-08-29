@@ -127,7 +127,7 @@ function get_compare_func(self,sub_result_list)
 
 		local compare_func=self.model.compare_func
 		local env_original=getfenv(compare_func)
-		local env=table.clone(env_original)
+		local env=table.makeclone(env_original)
 		local env_extra={
 			matched=matched,
 			str_obj=str_obj,

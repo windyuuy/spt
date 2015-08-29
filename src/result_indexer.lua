@@ -3,7 +3,7 @@
 module('result_indexer',package.seeall)
 
 function index(self,node_path,...)
-	local aliases=string.split(node_path,'.')
+	local aliases=string.split(node_path,'[.]')
 	--	local end_alias,attr_name=unpack(string.split(aliases[#aliases],'@'))
 	local attr_name
 	if(aliases[#aliases]:sub(1,1)=='@')then
@@ -80,4 +80,4 @@ end
 
 --result_proto.index=index
 
-table.merge(result_proto,result_indexer)
+table.copy(result_proto,result_indexer)
