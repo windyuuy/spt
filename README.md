@@ -59,3 +59,16 @@ ion,checker_not:create({ch_hello})})})
 	7.=result.... -> =result:index('...')
 	8.使用loadfile 和 loadstring 两种
 	
+检测：
+	1.mark_string	='...' -> ='...'
+	2.parse_checker	$name{...} -> checker_name({...})
+	3.mark_checker	=$name{...} -> =checker_name({...})
+	4.parse_string_checker	[/.../ /.../] -> ch_str('..') ch_str('..')
+	5.mark_string_checker	=[/.../] -> =ch_str('..')
+	6.parse_recursion	$$name -> 
+	7.parse_check	=@check<checker,lineinfo,...> -> =checker_check(checker,lineinfo,...)
+	8.mark_result	name=@ -> name=
+	9.parse_result_index	=result.... -> =result:index('...')
+	10.loadstring
+	11.loadfile
+	
