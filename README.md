@@ -57,4 +57,5 @@ ion,checker_not:create({ch_hello})})})
 	5.=[/.../] -> =ch_str('...')
 	6.=@check<checker,lineinfo,...> -> =checker_check(checker,lineinfo,...)
 	7.=result.... -> =result:index('...')
+	8.使用loadfile 和 loadstring 两种
 	
