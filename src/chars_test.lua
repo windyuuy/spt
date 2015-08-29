@@ -4,10 +4,10 @@ require('lua_ext')
 require('checker_init')
 
 local function main()
-	local info_hello=lineinfo:create('hello hellohallohellohellohellohellohellohello world')
+	local info_hello=lineinfo:create('hklpoij pion;nl')
 
 	local ch_c=ch_chars('abcdefghijklmnopqrstuvwxyz',nil,{'n'})
-	local ds=ch_c:create('wef',{{3,7}})
+	local ds=ch_c:create('wef')
 	local rs=ds:check(info_hello)
 	rdump(rs)
 	

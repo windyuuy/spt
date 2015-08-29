@@ -65,7 +65,7 @@ function get_max_repeat_times(compare,lineinfo,count_ranges)
 
 		local inc_sub_rawline_list={}
 		local str_obj
-		while(bigger_than(max,repeat_times_copy))do
+		while(bigger_than(max,repeat_times_copy) and lineinfo_copy:onway())do
 			matched,str_obj=compare(lineinfo_copy)
 			if(matched==true)then
 				repeat_times_copy=repeat_times_copy+1

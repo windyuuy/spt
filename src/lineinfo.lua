@@ -38,6 +38,10 @@ function cutline(self,pos)
 	return self.rawline:sub(self.curpos,pos and self.curpos+pos-1)
 end
 
+function onway(self)
+	return self.curpos<=self.endpos
+end
+
 function create(self,line)
 	return {
 		rawline=line,
@@ -49,5 +53,6 @@ function create(self,line)
 		skip_by=skip_by,
 		snapshot=snapshot,
 		cutline=cutline,
+		onway=onway,
 	}
 end
