@@ -16,6 +16,8 @@ line = result.@rawline<>
 line = result.@repeat_times<>
 line = result.bracket
 
+// 最小匹配使用数值范围内加 'min' 指示
+
 // 预定义关系符：$line $or $not $is $and
 // 关系符=符号引用+递归调用+循环调用计数
 // 循环调用计数采用范围内，单纯最大匹配或最小匹配，因为适度匹配的条件太相对

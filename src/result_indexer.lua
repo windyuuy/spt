@@ -3,7 +3,7 @@
 module('result_indexer',package.seeall)
 
 function index(self,node_path,...)
-	local aliases=string.split(node_path,'[.]')
+	local aliases=string.split(node_path,'.',nil,true)
 	--	local end_alias,attr_name=unpack(string.split(aliases[#aliases],'@'))
 	local attr_name
 	if(aliases[#aliases]:sub(1,1)=='@')then

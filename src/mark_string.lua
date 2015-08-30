@@ -1,20 +1,18 @@
 
 module('mark_string',package.seeall)
 
-function parse(line)
---	string = '(+ a b (+ c (+e f) k))'
+function parse(self,line)
 	local chars_letters=ch_chars('abcdefghijklmnopqrstuvwxyz')
 	local chars_words=ch_chars('abcdefghijklmnopqrstuvwxyz_',{'n'})
-	local str_sign=ch_chars("'")
-	local string_line_checker=ch_line({chars_words:create('wef'),ch_str('='),str_sign,chars_words:create('kllwe'),str_sign})
-	local sline=lineinfo:create("lkjwelk='kljwe'")
-	local sd=string_line_checker:check(sline)
-	rdump(sd)
-	local sdd=sd:raw_index()
-	print(sdd.wef,sdd.kllwe)
-
-	rdump(string_line_checker:raw_check(sline))
-	
-	return sd.rawline
-	
-end 
+	local str_sign=ch_chars("\"")
+	local sentence=ch_not({str_sign},{'n'})
+	local blankets=ch_str(' ',{'n'})
+	local string_line_checker=ch_line({chars_words:create('varname'),blankets,ch_str('='),blankets,str_sign,sentence:create('body'),str_sign})
+	local sline=lineinfo:create(line)
+	local rawresult=string_line_checker:check(sline)
+	if(true)then
+		return 'local '..line
+	else
+		return nil
+	end
+end

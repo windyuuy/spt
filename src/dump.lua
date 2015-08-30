@@ -14,13 +14,22 @@ local function print(x,...)
 	end
 end
 
+local function escape_string(s)
+	if(string.find(s,"'",nil,true))then
+		s=string.gsub(s,'"','\\"')
+		return '"'..s..'"'
+	else
+		return '\''..s..'\''
+	end
+end
+
 function var_dump(data, max_level, prefix)
 	assert(var_dump~=print,'')
 	if type(prefix) ~= "string" then
 		prefix = ""
 	end
 	if type(data) ~= "table" then
-		print(prefix .. tostring(data))
+		print(prefix .. escape_string(data))
 	else
 		print(data)
 		if max_level ~= 0 then
@@ -36,7 +45,7 @@ function var_dump(data, max_level, prefix)
 
 				if type(v) ~= "table" or (type(max_level) == "number" and max_level <= 1) then
 					if(type(v)=='string')then
-						print('\''..v..'\'')
+						print(escape_string(v))
 					else
 						print(v)
 					end

@@ -13,5 +13,7 @@ function list_relative(checker)
 		sub_rawline_list[#sub_rawline_list+1]=result.rawline
 		lineinfo_back:skip_by(result.rawline)
 		return true
+	else
+		sub_rawline_list[#sub_rawline_list+1]=lineinfo_back:cutline(1)
 	end
 end

@@ -12,7 +12,7 @@ function get_compare_func(self,sub_result_list)
 
 		local cc=lineinfo:cutline(1)
 --		matched=lineinfo:compare(data)
-		matched=(string.find(data,cc)~=nil)
+		matched=(string.find(data,cc,nil,true)~=nil)
 		str_obj=cc
 
 		--sub_result_list
