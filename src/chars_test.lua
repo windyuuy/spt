@@ -11,6 +11,10 @@ local function main()
 	local rs=ds:check(info_hello)
 	rdump(rs)
 	
+	local rrs=ds:raw_check(info_hello)
+	rdump(rrs)
+	
+
 end
 
 main()

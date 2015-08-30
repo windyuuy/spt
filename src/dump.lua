@@ -3,6 +3,17 @@
 --- @param [max_level] tableҪչ����ӡ�ļ���Ĭ��nil��ʾȫ��չ��
 --- @param [prefix] �����ڵݹ�ʱ��������ò����û�ʹ����
 --- @ref http://dearymz.blog.163.com/blog/static/205657420089251655186/
+--
+
+local _print=print
+local function print(x,...)
+	if(type(x)=='table')then
+		_print(_tostring(x),...)
+	else
+		_print(x,...)
+	end
+end
+
 function var_dump(data, max_level, prefix)
 	assert(var_dump~=print,'')
 	if type(prefix) ~= "string" then

@@ -190,6 +190,15 @@ function check(self,lineinfo,count_ranges)
 	return result
 end
 
+function raw_check(self,lineinfo,count_ranges)
+	local result=self:check(lineinfo,count_ranges)
+	if(result.matched)then
+		return result:raw_index()
+	else
+		return nil
+	end
+end
+
 local function _create(self,checker_list,alias,preset_count_ranges)
 	local function create(self,alias,preset_count_ranges)
 		if(preset_count_ranges==nil and type(alias)=='table')then
@@ -209,6 +218,7 @@ local function _create(self,checker_list,alias,preset_count_ranges)
 		checker_list=checker_list,
 
 		check=self.check,
+		raw_check=self.raw_check,
 		alias=alias or convert_name(self._NAME),
 		preset_count_ranges=preset_count_ranges or {1},
 
