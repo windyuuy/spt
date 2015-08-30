@@ -7,7 +7,7 @@ string parser toolkit
 //op = @rawset{= & + - * / %}
 
 string = '(+ a b (+ c (+e f) k))'
-op = $or{'=' '&' '+'}
+op = $or{[/=/ /&/ /+/]}
 sump = $line{bracket op $or{$$sump word}[3,(4,5),(7,+)] un_bracket[1]}
 
 result = @check<string,sump>
