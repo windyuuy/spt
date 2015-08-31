@@ -58,7 +58,7 @@ function get_max_repeat_times(compare,lineinfo,count_ranges)
 	local repeat_times_copy=repeat_times
 	local matched
 	local last_statu={matched=false,repeat_time=0}
-	for _,v in ipairs(count_ranges)do
+	for i,v in ipairs(count_ranges)do
 		local max,min
 		max=v[2]
 		min=v[1]
@@ -112,6 +112,8 @@ function list_relative(checker)
 end
 
 function compare_func()
+	cur_sub_result={}
+	sub_result_list[#sub_result_list+1]=cur_sub_result
 	local list_relative=model.list_relative
 	local env_original=getfenv(list_relative)
 	setfenv(list_relative,getfenv(1))
@@ -144,6 +146,7 @@ function get_compare_func(self,sub_result_list)
 			matched=matched,
 			str_obj=str_obj,
 			sub_result_list=sub_result_list,
+			cur_sub_result={},
 			checker_list=checker_list,
 			lineinfo_back=lineinfo_back,
 			sub_rawline_list=sub_rawline_list,

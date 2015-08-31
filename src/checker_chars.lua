@@ -5,7 +5,7 @@ init_checker(checker_chars)
 
 function get_compare_func(self,sub_result_list)
 	local function compare(lineinfo)
-		local sub_result_list=sub_result_list
+--		local sub_result_list=sub_result_list
 		local data=self.checker_list
 		local matched=false
 		local str_obj

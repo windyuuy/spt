@@ -5,7 +5,7 @@
 
 string = '(+ a b (+ c (+e f) k))'
 op = $or{[/=/ /&/ /+/]}
-sump = $line{bracket op $or{$$sump word}[3,(4,5),(7,+)] un_bracket[1]}
+sump = $line(ljk){bracket op $or{$$sump word}[3,(4,5),(7,+)] un_bracket[1]}
 
 result = @check<string,sump>
 

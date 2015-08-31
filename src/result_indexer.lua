@@ -3,7 +3,13 @@
 module('result_indexer',package.seeall)
 
 function index(self,node_path,...)
-	local aliases=string.split(node_path,'.',nil,true)
+	local aliases=string.split(node_path,'>',nil)
+	local order=tonumber(aliases[1])
+	if(order and order>0)then
+		table.remove(aliases,1)
+	else
+		order=1
+	end
 	--	local end_alias,attr_name=unpack(string.split(aliases[#aliases],'@'))
 	local attr_name
 	if(aliases[#aliases]:sub(1,1)=='@')then
@@ -13,8 +19,14 @@ function index(self,node_path,...)
 
 	local node=self
 	local cur_node
+	local cur_order=order
+	local tlines,aname
 	for _,alias in ipairs(aliases) do
-		cur_node=node.sub_result_list[alias]
+		tlines=string.split(alias,'[.]')
+		aname=tlines[1]
+		order=tonumber(tlines[2]) or 1
+		cur_node=node.sub_result_list[cur_order][aname]
+		cur_order=order
 		node=cur_node
 		if(node==nil)then break end
 	end
@@ -44,9 +56,10 @@ function index(self,node_path,...)
 
 end
 
-function raw_index(self)
+function raw_index(self,index)
+	index=index or 1
 	local raw_list={}
-	for k,v in pairs(self.sub_result_list) do
+	for k,v in pairs(self.sub_result_list[index]) do
 		raw_list[k]=v.rawline
 	end
 	return raw_list

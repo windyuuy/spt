@@ -13,11 +13,11 @@ local function main()
 	local ch_and=checker_and:create({ch_hello,ch_hello,ch_not})
 	local ch_line=ch_line({ch_hello,ch_and,ch_hh},'kljl',{3})
 	local ch_line2=checker_line:create({ch_line,ch_blanket,ch_world},'kjlk')
-	local info_hello=lineinfo:create('hellohellohallohellohellohellohellohellohello world')
-	local result=ch_line2:check(info_hello,{1})
---	vdump(result)
+	local info_hello=lineinfo:create('hellohellohallohellohellohellohellohellohello worldhellohellohallohellohellohellohellohellohello world')
+	local result=ch_line2:check(info_hello,{2})
+--	vdump(result,7)
 --	local i_result=r_index(result)
-	local rline=result:index('kljl.@rawline')
+	local rline=result:index('kljl>@rawline')
 	local rworld=result:index('wd')
 	rdump(rworld,3)
 	local cc=join_results({rline,rworld,'kwelk',rworld})
@@ -25,7 +25,8 @@ local function main()
 	
 	local rs=result:index('kljl'):raw_index()
 	rdump(rs)
-	print(rs['$is'])
+--	print(rs['$is'])
+--2>dw.3>lk.5>srwe
 	
 end
 
