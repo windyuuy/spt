@@ -4,8 +4,10 @@ module('result_indexer',package.seeall)
 
 function index(self,node_path,...)
 	local aliases=string.split(node_path,'>',nil)
-	local order=tonumber(aliases[1])
+	local order=aliases[1]
+	order=tonumber(order)
 	if(order and order>0)then
+--		assert(aliases[1]:sub(1,1)=='.','')
 		table.remove(aliases,1)
 	else
 		order=1
