@@ -17,9 +17,12 @@ local function main()
 --	sd2=runner.runline('kk=$str(){"lkjlk"}')
 --	sd2=runner.runline('kk=$line(){[/kjwlef/ /lkjwlekjf/] $str(){"lkwjelf"}[]}[]')
 --	local sd2=runner.runline('kk=[/wfewef/]')
---	local sd2=runner.runline('[/wfewef/]')
+	local sd2=runner.runline('[/wfewef/]')
 --	print(sd==sd2)
 	print(sd2)
+	local sd=eval(sd2)
+--	local sd=cho_rstr('wfewef')
+	rdump(sd)
 end
 
 main()

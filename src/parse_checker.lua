@@ -44,7 +44,7 @@ function parse(self,line)
 	--	print(sline)
 
 	--------------
-	-- 1). [/.../ /.../] -> ch_str('...'),ch_str('...')
+	-- 1). [/.../ /.../] -> ch_str('...'),ch_rstr('...')
 	-- 2). $$name -> recursion
 	-- 3). (-,+) -> ('-','+')
 	-- 4). $name(alias){ -> cho_name(alias,{
@@ -54,8 +54,8 @@ function parse(self,line)
 	-- 8). (, -> (nil,
 	-- 9). whitespace -> ,
 
-	--	sline=gsub(sline,'/ /',"'),cho_str('")
-	sline=gsub(sline,'[[]/',"cho_str('")
+	--	sline=gsub(sline,'/ /',"'),cho_rstr('")
+	sline=gsub(sline,'[[]/',"cho_rstr('")
 	sline=gsub(sline,'/]',"')")
 
 	sline=gsub(sline,'$$%w+','recursion')
@@ -76,7 +76,7 @@ function parse(self,line)
 
 	-----
 	--
-	sline=gsub(sline,'/ /',"'),cho_str('")
+	sline=gsub(sline,'/ /',"'),cho_rstr('")
 
 	sline=gsub(sline,'[(],','(nil,')
 
