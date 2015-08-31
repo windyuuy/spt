@@ -193,10 +193,10 @@ function check(self,lineinfo,count_ranges)
 	return result
 end
 
-function raw_check(self,lineinfo,count_ranges)
+function raw_check(self,lineinfo,count_ranges,index)
 	local result=self:check(lineinfo,count_ranges)
 	if(result.matched)then
-		return result:raw_index()
+		return result:raw_index(index)
 	else
 		return nil
 	end
