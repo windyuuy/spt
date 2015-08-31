@@ -25,4 +25,8 @@ local function main()
 	rdump(sd)
 end
 
+cs_mem()
+
 main()
+
+show_mem()

@@ -7,6 +7,23 @@ end
 
 requirelist({'strbuf','list','string_ext','dump'})
 
+function clear_mem(count)
+	count=count or 2
+	for i=1,count do
+		collectgarbage()
+	end
+	print('collected')
+end
+
+function show_mem()
+	print(collectgarbage('count'))
+end
+
+function cs_mem()
+	clear_mem()
+	show_mem()
+end
+
 function table.makeclone(self,tt)
 	assert(type(self)=='table','')
 	tt=tt or {}
