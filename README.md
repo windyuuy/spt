@@ -1,3 +1,3 @@
 # spt
-string parser toolkit
+string parse toolkit
 
