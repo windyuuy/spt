@@ -8,3 +8,7 @@ for k,v in ipairs(names)do
 		func(list,name,range,...)
 	end
 end
+
+cho_str=function(name,list,range,...)
+	func(list[1],name,range,...)
+end
