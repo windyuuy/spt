@@ -165,6 +165,14 @@ function get_compare_func(self,sub_result_list)
 	return compare
 end
 
+function get_sub_result_list(self)
+	return self.sub_result_list
+end
+
+function get_sub_result(self,index)
+	return get_sub_result_list(self)[index]
+end
+
 function check(self,lineinfo,count_ranges)
 
 	count_ranges=count_ranges or self.preset_count_ranges
@@ -185,6 +193,10 @@ function check(self,lineinfo,count_ranges)
 		repeat_times=repeat_times,
 		sub_result_list=sub_result_list,
 		lineinfo_snapshot=lineinfo_copy:snapshot(),
+
+		get_sub_result_list=self.model.get_sub_result_list,
+		get_sub_result=self.model.get_sub_result,
+		raw_index=self.model.raw_index,
 	}
 
 	setmetatable(result,{__index=result_proto})
@@ -217,7 +229,10 @@ local function _create(self,checker_list,alias,preset_count_ranges)
 		return copyi
 	end
 
-	return {
+	local model={}
+	setmetatable(model,{__index=self})
+	
+	local the_checker={
 		checker_list=checker_list,
 
 		check=self.check,
@@ -226,9 +241,11 @@ local function _create(self,checker_list,alias,preset_count_ranges)
 		preset_count_ranges=preset_count_ranges or {1},
 
 		name=convert_name(self._NAME),
-		model=self,
+		model=model,
 		create=create,
+		
 	}
+	return the_checker
 end
 
 function create(self,checker_list,alias,preset_count_ranges)

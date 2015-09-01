@@ -35,6 +35,10 @@ function var_dump(data, max_level, prefix)
 		if max_level ~= 0 then
 			local prefix_next = prefix .. "    "
 			print(prefix .. "{")
+			if(getmetatable(data))then
+				io.stdout:write(prefix_next..'meta')
+				print(getmetatable(data))
+			end
 			for k,v in pairs(data) do
 
 				if(type(k)=='number')then

@@ -61,7 +61,7 @@ end
 function raw_index(self,index)
 	index=index or 1
 	local raw_list={}
-	for k,v in pairs(self.sub_result_list[index]) do
+	for k,v in pairs(self:get_sub_result(index)) do
 		raw_list[k]=v.rawline
 	end
 	return raw_list

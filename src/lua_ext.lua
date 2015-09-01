@@ -5,12 +5,22 @@ function requirelist(list)
 	end
 end
 
+function require_tests(list)
+	for i,v in ipairs(list) do
+		if(not require(v))then
+			return false
+		end
+	end
+	return true
+end
+
 -- sudo mount -t ntfs-3g /dev/sda5 /home/happy/devs/proc -ro force
 
 --require('socket')
 
 package.path=package.path..';/home/happy/devs/proc/PCOM/lua/5.1/lua/?.lua;'
-requirelist({'socket','strbuf','list','string_ext','dump'})
+--requirelist({'socket','strbuf','list','string_ext','dump'})
+requirelist({'strbuf','list','string_ext','dump'})
 
 requirelist({'strbuf','list','string_ext','dump'})
 
@@ -72,4 +82,18 @@ function load(name)
 	_G[name]=nil
 	_G[name]=back
 	return mod
+end
+
+local raw_list_meta={__index=function (t,k)
+	if(k<=t._rawline:len())then
+		return t._rawline:sub(k,k)
+	else
+		return nil
+	end
+end}
+function raw_string(rawline)
+	local raw_list={_rawline=rawline}
+	setmetatable(raw_list,raw_list_meta)
+	return raw_list
+
 end
