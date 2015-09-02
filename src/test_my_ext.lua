@@ -18,7 +18,7 @@ hello.e()
 
 local function f()
 	cs_mem()
-	for i=1,10000000 do
+	for i=1,100000 do
 		sheet()
 	end
 	show_mem()
