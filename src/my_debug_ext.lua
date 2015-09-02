@@ -131,7 +131,7 @@ function setvarvalue (name,value,level)
 end
 
 -- test internal
-function c()
+local function c()
 	return function()
 		local d=5
 		print(d)
@@ -147,7 +147,7 @@ end
 local b=c()
 b()
 
-function c(d)
+local function c(d)
 	return function()
 		print(d)
 		local c=223
@@ -162,8 +162,9 @@ end
 local b=c(4)
 b()
 
+assert(d==nil,'')
 d=23
-function c()
+local function c()
 	return function()
 		print(d)
 		local c=223
@@ -177,3 +178,4 @@ function c()
 end
 local b=c()
 b()
+d=nil
