@@ -1,8 +1,8 @@
 
 local names={'str','chars','and','or','not','line','redef'}
 
-local func
 for k,v in ipairs(names)do
+	local func
 	func=_G['ch_'..v]
 	_G['cho_'..v]=function(name,list,range,...)
 		return func(list,name,range,...)

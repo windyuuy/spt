@@ -1,6 +1,8 @@
 
 //string = [/(+ a b (+ c (+e f) k))/]
 
+//chars={/lklwef/}[2,(3,4)]
+
 //op = @rawset{= & + - * / %}
 
 string = '(+ a b (+ c (+e f) k))'

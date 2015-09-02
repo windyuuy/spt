@@ -33,10 +33,8 @@ function _record_check_result(sub_result_list,result)
 	if(not sub_result_list[checker.name])then sub_result_list[checker.name]=result end
 end
 
-function get_max_repeat_times(compare,lineinfo,count_ranges)
-	local repeat_times=0
-	local sub_rawline_list={}
-
+function arrange_count_ranges(count_ranges)
+	
 	for k,v in ipairs(count_ranges)do
 		local max,min
 		if(type(v)=='table')then
@@ -53,6 +51,12 @@ function get_max_repeat_times(compare,lineinfo,count_ranges)
 		end
 
 	end
+	return count_ranges
+end
+
+function get_max_repeat_times(compare,lineinfo,count_ranges)
+	local repeat_times=0
+	local sub_rawline_list={}
 
 	local lineinfo_copy=lineinfo:clone()
 	local repeat_times_copy=repeat_times
@@ -180,14 +184,19 @@ function check(self,lineinfo,count_ranges)
 	local sub_result_list={}
 	local compare=self.model.get_compare_func(self,sub_result_list)
 
+	arrange_count_ranges(count_ranges)
+	
 	local matched,repeat_times,sub_rawline_list,lineinfo_copy=self.model.get_max_repeat_times(compare,lineinfo,count_ranges)
 
 	local rawline
 	rawline=table.concat(sub_rawline_list)
 
+	local checker={checker_name=self.name,checker_alias=self.alias}
+	setmetatable(checker,{__index=self})
+
 	local result={
 		matched=matched,
-		checker=self,
+		checker=checker,
 		rawline=rawline,
 		sub_rawline_list=sub_rawline_list,
 		repeat_times=repeat_times,
