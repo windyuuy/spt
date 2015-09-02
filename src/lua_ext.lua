@@ -20,9 +20,7 @@ end
 
 package.path=package.path..';/home/happy/devs/proc/PCOM/lua/5.1/lua/?.lua;'
 --requirelist({'socket','strbuf','list','string_ext','dump'})
-requirelist({'strbuf','list','string_ext','dump'})
-
-requirelist({'strbuf','list','string_ext','dump'})
+requirelist({'strbuf','list','string_ext','dump','my_debug_ext'})
 
 function clear_mem(count)
 	count=count or 2

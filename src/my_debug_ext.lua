@@ -1,6 +1,7 @@
 
 function getinternalvalue(name,level)
-	level=level or 2
+	level=level or 1
+	level=level+1
 	local value, found
 	-- try local variables
 	local i = 1
@@ -18,7 +19,8 @@ function getinternalvalue(name,level)
 end
 
 function setinternalvalue(name,value,level)
-	level=level or 2
+	level=level or 1
+	level=level+1
 	local varvalue, found,vindex
 	-- try local variables
 	local i = 1
@@ -42,7 +44,8 @@ function setinternalvalue(name,value,level)
 end
 
 function getupvalue(name,level)
-	level=level or 2
+	level=level or 1
+	level=level+1
 
 	-- try upvalues
 	local func = debug.getinfo(level).func
@@ -57,7 +60,8 @@ function getupvalue(name,level)
 end
 
 function setupvalue(name,value,level)
-	level=level or 2
+	level=level or 1
+	level=level+1
 
 	-- try upvalues
 	local func = debug.getinfo(level).func
@@ -75,7 +79,7 @@ function setupvalue(name,value,level)
 end
 
 function getlocalvalue(name,level)
-	level=level or 2
+	level=level or 1
 	level=level+1
 	local result
 	result=getinternalvalue(name,level)
@@ -86,7 +90,7 @@ function getlocalvalue(name,level)
 end
 
 function setlocalvalue(name,value,level)
-	level=level or 2
+	level=level or 1
 	level=level+1
 	if(getinternalvalue(name,level))then
 		setinternalvalue(name,value,level)
@@ -108,7 +112,7 @@ function setglobalvalue(name,value)
 end
 
 function getvarvalue (name,level)
-	level=level or 2
+	level=level or 1
 	level=level+1
 	local result
 	result=getlocalvalue(name,level)
@@ -119,7 +123,7 @@ function getvarvalue (name,level)
 end
 
 function setvarvalue (name,value,level)
-	level=level or 2
+	level=level or 1
 	level=level+1
 	if(getlocalvalue(name,level))then
 		setlocalvalue(name,value,level)
@@ -129,53 +133,3 @@ function setvarvalue (name,value,level)
 		setglobalvalue(name,value)
 	end
 end
-
--- test internal
-local function c()
-	return function()
-		local d=5
-		print(d)
-		local c=223
-		--	d=5
-		local e=getvarvalue('d')
-		print(e)
-		setvarvalue('d',22)
-		local e=getvarvalue('d')
-		print(e)
-	end
-end
-local b=c()
-b()
-
-local function c(d)
-	return function()
-		print(d)
-		local c=223
-		--	d=5
-		local e=getvarvalue('d')
-		print(e)
-		setvarvalue('d',22)
-		local e=getvarvalue('d')
-		print(e)
-	end
-end
-local b=c(4)
-b()
-
-assert(d==nil,'')
-d=23
-local function c()
-	return function()
-		print(d)
-		local c=223
-		--	d=5
-		local e=getvarvalue('d')
-		print(e)
-		setvarvalue('d',22)
-		local e=getvarvalue('d')
-		print(e)
-	end
-end
-local b=c()
-b()
-d=nil
