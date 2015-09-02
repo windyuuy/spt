@@ -130,17 +130,50 @@ function setvarvalue (name,value,level)
 	end
 end
 
+-- test internal
+function c()
+	return function()
+		local d=5
+		print(d)
+		local c=223
+		--	d=5
+		local e=getvarvalue('d')
+		print(e)
+		setvarvalue('d',22)
+		local e=getvarvalue('d')
+		print(e)
+	end
+end
+local b=c()
+b()
+
 function c(d)
 	return function()
 		print(d)
 		local c=223
 		--	d=5
-		local e=getupvalue('d')
+		local e=getvarvalue('d')
 		print(e)
-		setlocalvalue('d',22)
+		setvarvalue('d',22)
 		local e=getvarvalue('d')
 		print(e)
 	end
 end
 local b=c(4)
+b()
+
+d=23
+function c()
+	return function()
+		print(d)
+		local c=223
+		--	d=5
+		local e=getvarvalue('d')
+		print(e)
+		setvarvalue('d',22)
+		local e=getvarvalue('d')
+		print(e)
+	end
+end
+local b=c()
 b()
