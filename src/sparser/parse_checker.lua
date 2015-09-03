@@ -15,7 +15,7 @@ function parse(self,line)
 	result=result or string.match(line,'%w+={/.+/}[^[]')
 	local result2=string.match(line,'$%w+{')
 	result2=result2 or string.match(line,'[[]/.+/]')
---	result2=result2 or string.match(line,'{/.+/}')
+	--	result2=result2 or string.match(line,'{/.+/}')
 	result2=result2 or string.match(line,'{/.+/}[[][^]]-]')
 	result2=result2 or string.match(line,'{/.+/}[^[]')
 
@@ -41,8 +41,8 @@ function parse(self,line)
 	-- 3). name[ -> name()[
 	-- 4). name(alias)<whitespace or }> -> name(alias)[]
 
---	sline=gsub(sline,'^{/(.+)/}$',"ch_chars('%1'")
-	
+	--	sline=gsub(sline,'^{/(.+)/}$',"ch_chars('%1'")
+
 	sline=gsub(sline,'$(%w+){','$%1(){')
 	sline=gsub(sline,'} ','}[]')
 	sline=gsub(sline,'}$','}[]')
@@ -64,7 +64,7 @@ function parse(self,line)
 	-- 9). whitespace -> ,
 
 	sline=gsub(sline,'{/(.-)/}[[]',"ch_chars('%1',nil[")
-	
+
 	--	sline=gsub(sline,'/ /',"'),cho_rstr('")
 	sline=gsub(sline,'[[]/',"cho_rstr('")
 	sline=gsub(sline,'/]',"')")

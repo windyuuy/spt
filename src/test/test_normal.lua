@@ -15,19 +15,19 @@ local function main()
 	local ch_line2=checker_line:create({ch_line,ch_blanket,ch_world},'kjlk')
 	local info_hello=lineinfo:create('hellohellohallohellohellohellohellohellohello worldhellohellohallohellohellohellohellohellohello world')
 	local result=ch_line2:check(info_hello,{2})
---	vdump(result,7)
---	local i_result=r_index(result)
+	--	vdump(result,7)
+	--	local i_result=r_index(result)
 	local rline=result:index('1>kljl>@rawline')
 	local rworld=result:index('wd')
 	rdump(rworld,3)
 	local cc=join_results({rline,rworld,'kwelk',rworld})
 	print(cc)
-	
+
 	local rs=result:index('kljl'):raw_index()
 	rdump(rs)
---	print(rs['$is'])
---2>dw.3>lk.5>srwe
-	
+	--	print(rs['$is'])
+	--2>dw.3>lk.5>srwe
+
 end
 
 main()

@@ -34,7 +34,7 @@ function _record_check_result(sub_result_list,result)
 end
 
 function arrange_count_ranges(count_ranges)
-	
+
 	for k,v in ipairs(count_ranges)do
 		local max,min
 		if(type(v)=='table')then
@@ -185,7 +185,7 @@ function check(self,lineinfo,count_ranges)
 	local compare=self.model.get_compare_func(self,sub_result_list)
 
 	arrange_count_ranges(count_ranges)
-	
+
 	local matched,repeat_times,sub_rawline_list,lineinfo_copy=self.model.get_max_repeat_times(compare,lineinfo,count_ranges)
 
 	local rawline
@@ -240,7 +240,7 @@ local function _create(self,checker_list,alias,preset_count_ranges)
 
 	local model={}
 	setmetatable(model,{__index=self})
-	
+
 	local the_checker={
 		checker_list=checker_list,
 
@@ -252,7 +252,7 @@ local function _create(self,checker_list,alias,preset_count_ranges)
 		name=convert_name(self._NAME),
 		model=model,
 		create=create,
-		
+
 	}
 	return the_checker
 end

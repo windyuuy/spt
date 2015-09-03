@@ -7,7 +7,7 @@ function index(self,node_path,...)
 	local order=aliases[1]
 	order=tonumber(order)
 	if(order and order>0)then
---		assert(aliases[1]:sub(1,1)=='.','')
+		--		assert(aliases[1]:sub(1,1)=='.','')
 		table.remove(aliases,1)
 	else
 		order=1

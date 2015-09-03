@@ -3,9 +3,9 @@ require('lua_ext.own')
 
 local function d()
 	local s=sheet('hello')
-	
+
 	h=34
-	
+
 	function e()
 		print(h)
 	end
