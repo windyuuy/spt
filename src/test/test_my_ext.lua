@@ -1,5 +1,5 @@
 
-require('my_ext')
+require('lua_ext.own')
 
 local function d()
 	local s=sheet('hello')

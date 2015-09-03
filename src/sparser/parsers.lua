@@ -7,7 +7,7 @@ local parser_name_list={
 }
 
 for k,v in ipairs(parser_name_list)do
-	parsers[v]=load(v)
+	parsers[v]=load(v,'sparser')
 end
 
 return parsers

@@ -1,21 +1,40 @@
+--
+--local _load=load
+--function load(name)
+--	local back=_G[name]
+--	require('checker.'..name)
+--	local mod=package.loaded[name]
+--	_G[name]=nil
+--	_G[name]=back
+--	return mod
+--end
 
-require('checker_preload')
+require('checker.preload')
 
-checker_is=load('checker_is')
-checker_line=load('checker_line')
-checker_or=load('checker_or')
-checker_and=load('checker_and')
-checker_not=load('checker_not')
+local names={'is','chars','recursion','and','or','not','line','redef'}
 
-checker_chars=load('checker_chars')
+for k,name in ipairs(names)do
+	_G['checker_'..name]=load('checker_'..name,'checker')
+end
 
-checker_redef=load('checker_redef')
+checker_recurse=checker_recursion
 
-checker_recurse=load('checker_recursion')
+--
+--checker_is=load('checker_is')
+--checker_line=load('checker_line')
+--checker_or=load('checker_or')
+--checker_and=load('checker_and')
+--checker_not=load('checker_not')
+--
+--checker_chars=load('checker_chars')
+--
+--checker_redef=load('checker_redef')
+--
+--checker_recurse=load('checker_recursion')
 
-result_indexer=load('result_indexer')
+result_indexer=load('result.indexer')
 
-require('join_funcs')
+require('result.join')
 
 function ch_str(str,...)
 	local ch_hello=checker_is:create(str,...)

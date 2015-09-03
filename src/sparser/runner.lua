@@ -1,7 +1,7 @@
 
 module('runner',package.seeall)
 
-local parsers=require('parsers')
+local parsers=require('sparser.parsers')
 
 function runline(line)
 	local result,type,rtype

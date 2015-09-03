@@ -1,5 +1,5 @@
 
-require('my_debug_ext')
+require('lua_ext.debug')
 
 -- test internal
 local function c()

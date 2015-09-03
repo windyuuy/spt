@@ -1,7 +1,7 @@
 
 require('lua_ext')
 
-require('checker_init')
+require('checker')
 
 local function main()
 	local info_hello=lineinfo:create('hklphklpoij pion;nl')

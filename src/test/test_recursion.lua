@@ -1,7 +1,7 @@
 
 require('lua_ext')
 
-require('checker_init')
+require('checker')
 
 local function main()
 	local ch_hello=ch_str('hello')

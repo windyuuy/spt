@@ -1,9 +1,9 @@
 
 require('lua_ext')
 
-require('checker_init')
+require('checker')
 
-require('runner')
+require('sparser')
 
 local function main()
 	sheet()

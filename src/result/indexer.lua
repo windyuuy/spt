@@ -1,6 +1,6 @@
 
 
-module('result_indexer',package.seeall)
+module('result.indexer',package.seeall)
 
 function index(self,node_path,...)
 	local aliases=string.split(node_path,'>',nil)
@@ -95,4 +95,4 @@ end
 
 --result_proto.index=index
 
-table.copy(result_proto,result_indexer)
+table.copy(result_proto,result.indexer)
