@@ -8,3 +8,6 @@ string parse toolkit
 基本用法示例：
 	见 test.test_op_file.lua
 	
+期望：
+	希望通过逐渐测试、反思、完善、优化，能够成为一个稳定、为许多人信赖和使用的工具。
+	
