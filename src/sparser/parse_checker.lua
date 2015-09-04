@@ -9,15 +9,18 @@ function parse(self,line)
 	--op = $or{[/=/ /&/ /+/]}
 	--$name(alias){list}[range_list] -> cho_name(alias,{list},{range_list})
 
-	local result=string.match(line,'%w+=$%w+')
-	result=result or string.match(line,'%w+=[[]/.+/]')
-	result=result or string.match(line,'%w+={/.+/}[[][^]]-]')
-	result=result or string.match(line,'%w+={/.+/}[^[]')
-	local result2=string.match(line,'$%w+{')
+	local result=string.match(line,'^%w+=$%w+')
+	result=result or string.match(line,'^%w+=[[]/.+/]')
+	result=result or string.match(line,'^%w+={/.+/}[[][^]]-]')
+	result=result or string.match(line,'^%w+={/.+/}[^[]')
+	-- above cannot detect line end with eof,like {/wef/} but {/wef/}aqwe
+	result=result or string.match(line,'^%w+={/.+/}$')
+	local result2=string.match(line,'^$%w+{')
 	result2=result2 or string.match(line,'[[]/.+/]')
 	--	result2=result2 or string.match(line,'{/.+/}')
 	result2=result2 or string.match(line,'{/.+/}[[][^]]-]')
 	result2=result2 or string.match(line,'{/.+/}[^[]')
+	result2=result2 or string.match(line,'{/.+/}[^[]$')
 
 	if(not (result or result2))then
 		return nil
@@ -42,42 +45,49 @@ function parse(self,line)
 	-- 4). name(alias)<whitespace or }> -> name(alias)[]
 
 	--	sline=gsub(sline,'^{/(.+)/}$',"ch_chars('%1'")
-
 	sline=gsub(sline,'$(%w+){','$%1(){')
 	sline=gsub(sline,'} ','}[]')
 	sline=gsub(sline,'}$','}[]')
 	sline=gsub(sline,'([^$]%w+)[[]','%1()[')
-	sline=gsub(sline,'([^$][(]%w+[)])[ }]','%1[]')
+	sline=gsub(sline,'([^$][(][%w\'\"]+[)])[ }]','%1[] ')
 
 	--	print(sline)
 
 	--------------
-	--0). {/.../} -> cho_chars('...',
-	-- 1). [/.../ /.../] -> cho_rstr('...'),cho_rstr('...')
 	-- 2). $$name -> recursion
 	-- 3). (-,+) -> ('-','+')
 	-- 4). $name(alias){ -> cho_name(alias,{
 	-- 5). name(alias) -> name:create(alias
+	--0). {/.../} -> cho_chars('...',
+	-- 1). [/.../ /.../] -> cho_rstr('...'),cho_rstr('...')
 	-- 6). [] -> ,nil)
 	-- 7). [(),()] -> ,{{},{}})
 	-- 8). (, -> (nil,
 	-- 9). whitespace -> ,
 
+	-- 2). $$name -> recursion
+	sline=gsub(sline,'$$%w+','recursion')
+
+	-- 3). (-,+) -> ('-','+')
+	sline=gsub(sline,'([(,])([+-])([),])',"%1'%2'%3")
+
+	-- 4). $name(alias){ -> cho_name(alias,{
+	sline=gsub(sline,'$(%w+)[(]([%w\"\']-)[)]{','cho_%1(%2,{')
+	-- 5). name(alias) -> name:create(alias
+	sline=gsub(sline,'([^$])(%w+)[(]([%w\'\"]-)[)]','%1%2:create(%3')
+
+	--0). {/.../} -> cho_chars('...',
 	sline=gsub(sline,'{/(.-)/}[[]',"ch_chars('%1',nil[")
 
+	-- 1). [/.../ /.../] -> cho_rstr('...'),cho_rstr('...')
 	--	sline=gsub(sline,'/ /',"'),cho_rstr('")
 	sline=gsub(sline,'[[]/',"cho_rstr('")
 	sline=gsub(sline,'/]',"')")
 
-	sline=gsub(sline,'$$%w+','recursion')
-
-	sline=gsub(sline,'([(,])([+-])([),])',"%1'%2'%3")
-
-	sline=gsub(sline,'$(%w+)[(](%w-)[)]{','cho_%1(%2,{')
-	sline=gsub(sline,'([^$])(%w+)[(](%w-)[)]','%1%2:create(%3')
-
+	-- 6). [] -> ,nil)
 	sline=gsub(sline,'[[][]]',',nil)')
 
+	-- 7). [(),()] -> ,{{},{}})
 	sline=gsub(sline,',[(]',',{')
 	sline=gsub(sline,'[)],','},')
 	sline=gsub(sline,'[[][(]',',{{')
@@ -85,16 +95,16 @@ function parse(self,line)
 	sline=gsub(sline,'[[]',',{')
 	sline=gsub(sline,']','})')
 
-	-----
-	--
 	sline=gsub(sline,'/ /',"'),cho_rstr('")
 
+	-- 8). (, -> (nil,
 	sline=gsub(sline,'[(],','(nil,')
 
+	-- 9). whitespace -> ,
 	sline=gsub(sline,' ',',')
 
 	if(result)then
-		sline=table.concat({'local ',markline,'=',sline})
+		sline=table.concat({markline,'=',sline})
 	end
 	return sline
 end

@@ -8,7 +8,7 @@ require('sparser')
 local function main()
 	sheet()
 
-	local sd2,rtype=runner.runline("sd = '(+ a b (+ c (+e f) k))'")
+	local sd2,rtype=runner.parseline("sd = '(+ a b (+ c (+e f) k))'")
 	print(sd2)
 
 	if(rtype)then
