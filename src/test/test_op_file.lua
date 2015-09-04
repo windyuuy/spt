@@ -30,7 +30,7 @@ local function main()
 --	result=dd:check(lineinfo:create('print(hello)'))
 --	rdump(result)
 
-	print(result:index('wlekj>@rawline'))
+	print(result:index('krk>@rawline'))
 
 	f:close()
 end

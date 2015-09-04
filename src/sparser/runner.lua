@@ -41,7 +41,9 @@ function exec(content,type,index)
 	if(type)then
 		return eval(content)
 	else
-		print(content)
+		if(_DEBUG==1)then
+			print(content)
+		end
 		local func=loadstring(content)
 		if(func)then
 			setfenv(func,getfenv(index)._M or getfenv(index))
