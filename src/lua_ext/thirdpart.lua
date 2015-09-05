@@ -10,4 +10,5 @@
 
 -- config path of lua ext-lib manualy there
 package.path=package.path..';/home/happy/devs/proc/PCOM/lua/5.1/lua/?.lua;D:/PCOM/lua/5.1/lua/?.lua;'
+package.cpath=package.cpath..';/home/happy/softs/lua-5.1.4/lib/lua/5.1/?.so;'
 requirelist({'strbuf','list','string_ext'})
