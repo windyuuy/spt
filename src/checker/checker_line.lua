@@ -3,7 +3,8 @@ module('checker_line',package.seeall)
 
 init_checker(checker_line)
 
-function list_relative(checker)
+function list_relative(checker,env)
+	_setenv(env)
 	local result=checker:check(lineinfo_back)
 	matched=result.matched
 	if(result.matched)then
@@ -16,6 +17,4 @@ function list_relative(checker)
 		return true
 	end
 end
-
-
 

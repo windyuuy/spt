@@ -1,7 +1,14 @@
 
-function getinternalvalue(name,level)
+function getflevel(level)
 	level=level or 1
-	level=level+1
+	if(type(level)=='number')then
+		level=level+1
+	end
+	return level
+end
+
+function getinternalvalue(name,level)
+	level=getflevel(level)
 	local value, found
 	-- try local variables
 	local i = 1
@@ -19,8 +26,7 @@ function getinternalvalue(name,level)
 end
 
 function setinternalvalue(name,value,level)
-	level=level or 1
-	level=level+1
+	level=getflevel(level)
 	local varvalue, found,vindex
 	-- try local variables
 	local i = 1
@@ -44,8 +50,7 @@ function setinternalvalue(name,value,level)
 end
 
 function getupvalue(name,level)
-	level=level or 1
-	level=level+1
+	level=getflevel(level)
 
 	-- try upvalues
 	local func = debug.getinfo(level).func
@@ -60,8 +65,7 @@ function getupvalue(name,level)
 end
 
 function setupvalue(name,value,level)
-	level=level or 1
-	level=level+1
+	level=getflevel(level)
 
 	-- try upvalues
 	local func = debug.getinfo(level).func
@@ -79,8 +83,7 @@ function setupvalue(name,value,level)
 end
 
 function getlocalvalue(name,level)
-	level=level or 1
-	level=level+1
+	level=getflevel(level)
 	local result
 	result=getinternalvalue(name,level)
 	if(result==nil)then
@@ -90,8 +93,7 @@ function getlocalvalue(name,level)
 end
 
 function setlocalvalue(name,value,level)
-	level=level or 1
-	level=level+1
+	level=getflevel(level)
 	if(getinternalvalue(name,level))then
 		setinternalvalue(name,value,level)
 	end
@@ -112,8 +114,7 @@ function setglobalvalue(name,value)
 end
 
 function getvarvalue (name,level)
-	level=level or 1
-	level=level+1
+	level=getflevel(level)
 	local result
 	result=getlocalvalue(name,level)
 	if(result==nil)then
@@ -123,8 +124,7 @@ function getvarvalue (name,level)
 end
 
 function setvarvalue (name,value,level)
-	level=level or 1
-	level=level+1
+	level=getflevel(level)
 	if(getlocalvalue(name,level))then
 		setlocalvalue(name,value,level)
 	end

@@ -3,7 +3,8 @@ module('checker_not',package.seeall)
 
 init_checker(checker_not)
 
-function list_relative(checker)
+function list_relative(checker,env)
+	_setenv(env)
 	matched=true
 	local result=checker:check(lineinfo_back)
 	if(result.matched)then

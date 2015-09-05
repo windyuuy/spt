@@ -54,6 +54,16 @@ function arrange_count_ranges(count_ranges)
 	return count_ranges
 end
 
+function _setenv(env)
+	if(setfenv)then return end
+	if(env)then
+		setfenv(2,env)
+	else
+		setfenv(2,getfenv(3))
+	end
+end
+_G._setenv=_setenv
+
 function get_max_repeat_times(compare,lineinfo,count_ranges)
 	local repeat_times=0
 	local sub_rawline_list={}
@@ -112,19 +122,20 @@ function get_max_repeat_times(compare,lineinfo,count_ranges)
 	return matched,repeat_times,sub_rawline_list,lineinfo_copy
 end
 
-function list_relative(checker)
+function list_relative(checker,env)
 end
 
-function compare_func()
+function compare_func(env)
+	_setenv(env)
 	cur_sub_result={}
 	sub_result_list[#sub_result_list+1]=cur_sub_result
 	local list_relative=model.list_relative
 	local env_original=getfenv(list_relative)
-	setfenv(list_relative,getfenv(1))
+		setfenv(list_relative,getfenv(1))
 	for k,checker in ipairs(checker_list)do
-		if(list_relative(checker))then break end
+		if(list_relative(checker,getfenv(1)))then break end
 	end
-	setfenv(list_relative,env_original)
+		setfenv(list_relative,env_original)
 
 	if(matched)then
 		str_obj=table.concat(sub_rawline_list)
@@ -159,9 +170,9 @@ function get_compare_func(self,sub_result_list)
 		table.copy(env,env_extra)
 		setmetatable(env,getmetatable(env_original))
 
-		setfenv(compare_func,env)
-		matched,str_obj=compare_func()
-		setfenv(compare_func,env_original)
+				setfenv(compare_func,env)
+		matched,str_obj=compare_func(env)
+				setfenv(compare_func,env_original)
 
 		return matched,str_obj
 	end
