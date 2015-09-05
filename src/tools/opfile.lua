@@ -1,9 +1,6 @@
 require('lua_ext')
 require('lfs')
 
-for file in lfs.dir('./')do
-	print(file)
-	if(file~='.')then
-		rdump(lfs.attributes('./'..file))
-	end
+function lines_in_file(name,...)
+	return io.open(name,'r'):lines(...)
 end

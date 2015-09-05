@@ -87,7 +87,7 @@ function index_func(tl)
 	return function(t,k)
 		local value
 		if(rawget(t,k)~=nil)then return rawget(t,k) end
-		for i,vt in ipairs(tl)do
+		for i,vt in pairs(tl)do
 			if(vt[k]~=nil)then
 				return vt[k]
 			end
