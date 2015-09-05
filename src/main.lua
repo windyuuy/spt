@@ -1,22 +1,27 @@
 
 require('lua_ext')
-
-require('checker')
-
-require('parser')
-
-require('lfs')
+requirelist({
+	'checker','sparser',
+	'lfs'
+})
 
 local function main()
-	lfs.chdir('./src')
-	local f=io.open('main.lua')
-	for line in f:lines() do
-		print(line)
-	end
+	sheet('kkk')
+	lfs.chdir('./src/test')
+
+--	print('klwjlej')
+	runner.runfile('rule.rd')
+	--	local f=io.open('rule.rd')
+	--	runner.runcontent(f:lines())
+
+	local hf=io.open('hello.c')
+	local info=lineinfo:create(hf:lines()())
+
+	result=dd:check(info)
+
+	print(result:index('krk>@rawline'))
+
+	hf:close()
 end
 
-cs_mem()
-
 main()
-
-show_mem()

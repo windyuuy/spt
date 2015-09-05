@@ -53,7 +53,12 @@ function getupvalue(name,level)
 	level=getflevel(level)
 
 	-- try upvalues
-	local func = debug.getinfo(level).func
+	local func
+	if(type(level)=='number')then
+		func = debug.getinfo(level).func
+	else
+		func=level
+	end
 	local i = 1
 	while true do
 		local n, v = debug.getupvalue(func, i)
@@ -132,4 +137,10 @@ function setvarvalue (name,value,level)
 	if(getglobalvalue(name,value))then
 		setglobalvalue(name,value)
 	end
+end
+
+function log(tip)
+	print(debug.getinfo(2).source..': ')
+	print(tip)
+	print('@@')
 end

@@ -17,9 +17,8 @@ function parseline(line)
 	return results[1],rtype
 end
 
-function runcontent(lines,index)
-	index=index or 1
-	index=index+1
+function runcontent(lines,env)
+	env=env or {}
 	local codeline,content
 	local codelines={}
 	if(type(lines)=="table")then
@@ -33,13 +32,12 @@ function runcontent(lines,index)
 		end
 	end
 	content=table.concat(codelines,'\n')
-	return exec(content,false,index)
+	return exec(content,false,env)
 
 end
 
-function exec(content,type,index)
-	index=index or 1
-	index=index+1
+function exec(content,type,env)
+	env=env or {}
 	if(type)then
 		return eval(content)
 	else
@@ -48,18 +46,27 @@ function exec(content,type,index)
 		end
 		local func=loadstring(content)
 		if(func)then
-			setfenv(func,getfenv(index)._M or getfenv(index))
-			return func()
+--			local env=getfenv(index)
+--			setfenv(func,(env and env._M or _G._M or env))
+			local meta=getmetatable(env)
+			if(not meta or not meta.__index)then
+				setmetatable(env,{__index=_G._sparser_space})
+			else
+				setmetatable(env,{__index=index_func({meta.__index,_G._sparser_space}) } )
+			end
+			setfenv(func,env)
+			local ret=func()
+			setmetatable(env,meta)
+			return env,ret
 		else
-			debug_execfunc(content,index+1)
-			return nil
+			return debug_execfunc(content)
+--			return nil
 		end
 	end
 end
 
-function debug_execfunc(content,index)
-	index=index or nil
-	index=index+1
+function debug_execfunc(content,env)
+	env=env or {}
 	if(string.byte(content,#content)~=string.byte('\n',1))then
 		content=content..'\n'
 	end
@@ -86,16 +93,18 @@ function debug_execfunc(content,index)
 		print('break by unknown reason')
 	end
 	assert(false,'')
+	return env
 end
 
-function runfile(name,index)
-	index=(index or 1)+1
+function runfile(name,env)
+	env=env or {}
 	local f=io.open(name)
 	if(f)then
-		runner.runcontent(f:lines(),index)
+		runner.runcontent(f:lines(),env)
 		f:close()
 	else
 		print('file not exist:'..name)
 		assert(f,'')
 	end
+	return env
 end

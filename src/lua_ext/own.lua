@@ -82,3 +82,16 @@ end
 --	end
 --	return lines
 --end
+
+function index_func(tl)
+	return function(t,k)
+		local value
+		if(rawget(t,k)~=nil)then return rawget(t,k) end
+		for i,vt in ipairs(tl)do
+			if(vt[k]~=nil)then
+				return vt[k]
+			end
+		end
+		return nil
+	end
+end

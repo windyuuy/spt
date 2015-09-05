@@ -1,4 +1,4 @@
-require('lua_ext.debug')
+--require('lua_ext.debug')
 
 if(not getfenv)then
 	function getfenv(f)

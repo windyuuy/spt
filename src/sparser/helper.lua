@@ -1,4 +1,5 @@
 
+local space=sheet()
 local names={'str','chars','and','or','not','line','redef'}
 
 for k,v in ipairs(names)do
@@ -16,3 +17,5 @@ end
 cho_rstr=function(ss,...)
 	return ch_str(ss,nil,nil,...)
 end
+
+return space

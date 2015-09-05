@@ -1,7 +1,8 @@
 
 module('parse_checker',package.seeall)
 
-require('sparser.helper')
+local space=require('sparser.helper')
+_G._sparser_space=space
 
 function parse(self,line)
 	--sump = $line(){bracket op $or(){$$sump word}[3,(4,5),(7,+)] un_bracket()[1]}[1]
