@@ -9,8 +9,9 @@ local function main()
 	sheet('kkk')
 	lfs.chdir('./src/test')
 
-	local f=io.open('rule.rd')
-	runner.runcontent(f:lines())
+	runner.runfile('rule.rd')
+--	local f=io.open('rule.rd')
+--	runner.runcontent(f:lines())
 
 	local hf=io.open('hello.c')
 	local info=lineinfo:create(hf:lines()())
@@ -20,7 +21,6 @@ local function main()
 	print(result:index('krk>@rawline'))
 
 	hf:close()
-	f:close()
 end
 
 main()

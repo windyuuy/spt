@@ -17,7 +17,9 @@ function parseline(line)
 	return results[1],rtype
 end
 
-function runcontent(lines)
+function runcontent(lines,index)
+	index=index or 1
+	index=index+1
 	local codeline,content
 	local codelines={}
 	if(type(lines)=="table")then
@@ -31,7 +33,7 @@ function runcontent(lines)
 		end
 	end
 	content=table.concat(codelines,'\n')
-	return exec(content,false,2)
+	return exec(content,false,index)
 
 end
 
@@ -84,4 +86,16 @@ function debug_execfunc(content,index)
 		print('break by unknown reason')
 	end
 	assert(false,'')
+end
+
+function runfile(name,index)
+	index=(index or 1)+1
+	local f=io.open(name)
+	if(f)then
+		runner.runcontent(f:lines(),index)
+		f:close()
+	else
+		print('file not exist:'..name)
+		assert(f,'')
+	end
 end
