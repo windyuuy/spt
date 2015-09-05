@@ -55,7 +55,7 @@ function arrange_count_ranges(count_ranges)
 end
 
 function _setenv(env)
-	if(setfenv)then return end
+--	if(setfenv)then return end
 	if(env)then
 		setfenv(2,env)
 	else
