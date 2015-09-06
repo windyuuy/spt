@@ -1,9 +1,14 @@
 
 require('lua_ext')
 requirelist({
-	'checker','sparser',
-	'lfs'
+	'lfs','socket'
 })
+print(socket.gettime())
+requirelist({
+	'checker','sparser',
+--	'lfs','socket'
+})
+print(socket.gettime())
 
 local function main()
 	sheet('kkk')
@@ -24,4 +29,6 @@ local function main()
 	hf:close()
 end
 
+print(socket.gettime())
 main()
+print(socket.gettime())

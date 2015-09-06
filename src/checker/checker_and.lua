@@ -3,7 +3,7 @@ module('checker_and',package.seeall)
 
 init_checker(checker_and)
 
-function list_relative(checker,env)
+function proc_relation(checker,env)
 	_setenv(env)
 	local result=checker:check(lineinfo_back)
 	if(result.matched)then

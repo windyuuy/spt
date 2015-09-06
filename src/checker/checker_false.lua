@@ -122,20 +122,20 @@ function get_max_repeat_times(compare,lineinfo,count_ranges)
 	return matched,repeat_times,sub_rawline_list,lineinfo_copy
 end
 
-function list_relative(checker,env)
+function proc_relation(checker,env)
 end
 
 function compare_func(env)
 	_setenv(env)
 	cur_sub_result={}
 	sub_result_list[#sub_result_list+1]=cur_sub_result
-	local list_relative=model.list_relative
-	local env_original=getfenv(list_relative)
-		setfenv(list_relative,getfenv(1))
+	local proc_relation=model.proc_relation
+	local env_original=getfenv(proc_relation)
+		setfenv(proc_relation,getfenv(1))
 	for k,checker in ipairs(checker_list)do
-		if(list_relative(checker,getfenv(1)))then break end
+		if(proc_relation(checker,getfenv(1)))then break end
 	end
-		setfenv(list_relative,env_original)
+		setfenv(proc_relation,env_original)
 
 	if(matched)then
 		str_obj=table.concat(sub_rawline_list)
