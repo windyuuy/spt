@@ -3,7 +3,7 @@ module('checker_or',package.seeall)
 
 init_checker(checker_or)
 
-function list_relative(checker,env)
+function proc_relation(checker,env)
 	_setenv(env)
 	local result=checker:check(lineinfo_back)
 	matched=matched or result.matched
