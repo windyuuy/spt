@@ -32,7 +32,7 @@ function runcontent(lines,env)
 		end
 	end
 	content=table.concat(codelines,'\n')
-	return exec(content,false,env)
+	return exec(content,false,env),content
 
 end
 
@@ -97,14 +97,15 @@ function debug_execfunc(content,env)
 end
 
 function runfile(name,env)
+	local _,content
 	env=env or {}
 	local f=io.open(name)
 	if(f)then
-		runner.runcontent(f:lines(),env)
+		_,content=runner.runcontent(f:lines(),env)
 		f:close()
 	else
 		print('file not exist:'..name)
 		assert(f,'')
 	end
-	return env
+	return env,content
 end

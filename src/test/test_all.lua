@@ -10,6 +10,7 @@ assert(
 		'test_recursion',
 		'test_min_match',
 		'test_parsers',
-		'test_true'
+		'test_true',
+		'test_tools_runfile',
 	},
 	'test'),'')

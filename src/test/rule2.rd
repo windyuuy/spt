@@ -1,0 +1,12 @@
+bracket={/()/}
+quoet={/"/}
+word={/abcdefghijklmnopqrstuvwxyz_/}[5]
+dd=$line('wqekj'){
+	[/print/]
+	bracket('krk')
+	quoet
+	word('wlekj')
+	quoet('lkl')
+	bracket('kl')
+	$end{}
+}

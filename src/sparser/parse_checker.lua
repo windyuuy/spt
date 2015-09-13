@@ -40,13 +40,17 @@ function parse(self,line)
 
 	--------------
 	-- 0). ^/.../$ ->  cho_chars('...')
+	-- 1). $name<whitespace or }> -> $name{}<$1>
 	-- 1). $name{ -> $name(){
+	-- 2). }} -> } }
 	-- 2). }<whitespace or endofline> -> }[]
 	-- 3). name[ -> name()[
 	-- 4). name(alias)<whitespace or }> -> name(alias)[]
 
 	--	sline=gsub(sline,'^{/(.+)/}$',"ch_chars('%1'")
+	sline=gsub(sline,'$(%w+)([ }])','$%1(){}[]%2')
 	sline=gsub(sline,'$(%w+){','$%1(){')
+	sline=gsub(sline,'}}','} }')
 	sline=gsub(sline,'} ','}[]')
 	sline=gsub(sline,'}$','}[]')
 	sline=gsub(sline,'([^$]%w+)[[]','%1()[')
