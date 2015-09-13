@@ -6,6 +6,7 @@ assert(
 		'test_debug_ext',
 		'test_my_ext',
 		'test_chars',
+		'test_charset',
 		'test_normal',
 		'test_recursion',
 		'test_min_match',

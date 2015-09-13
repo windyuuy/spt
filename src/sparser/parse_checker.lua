@@ -56,7 +56,7 @@ function parse(self,line)
 	-- 3). name[ -> name()[
 	-- 4). name(alias)<whitespace or }> -> name(alias)[]
 
-	--	sline=gsub(sline,'^{/(.+)/}$',"ch_chars('%1'")
+	--	sline=gsub(sline,'^{/(.+)/}$',"ch_charset('%1'")
 	sline=gsub(sline,'$(%w+)([ }])','$%1(){}[]%2')
 	sline=gsub(sline,'$(%w+){','$%1(){')
 	sline=gsub(sline,'}}','} }')
@@ -91,7 +91,7 @@ function parse(self,line)
 	sline=gsub(sline,'([^$])(%w+)[(]([%w\'\"]-)[)]','%1%2:create(%3')
 
 	--0). {/.../} -> cho_chars('...',
-	sline=gsub(sline,'{/(.-)([(\\\\)]-)/}[[]',"ch_chars('%1%2',nil[")
+	sline=gsub(sline,'{/(.-)([(\\\\)]-)/}[[]',"ch_charset('%1%2',nil[")
 
 	-- 1). [/.../ /.../] -> cho_rstr('...'),cho_rstr('...')
 	--	sline=gsub(sline,'/ /',"'),cho_rstr('")
@@ -122,21 +122,4 @@ function parse(self,line)
 	end
 	return sline
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
