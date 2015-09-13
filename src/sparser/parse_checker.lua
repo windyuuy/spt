@@ -10,14 +10,23 @@ function parse(self,line)
 	--op = $or{[/=/ /&/ /+/]}
 	--$name(alias){list}[range_list] -> cho_name(alias,{list},{range_list})
 
+	local str_zend_reg='[^\\][(\\\\)]-'
+	local str_end_reg=str_zend_reg..'/]'
+	local str_body_reg='[^('..str_end_reg..')]'
+	local str_reg='[[]/.+'..str_end_reg
+	
+	local chars_zend_reg=str_zend_reg
+	local chars_end_reg=chars_zend_reg..'/}'
+	local chars_body_reg='[^('..chars_end_reg..')]'
+	
 	local result=string.match(line,'^%w+=$%w+')
-	result=result or string.match(line,'^%w+=[[]/.+/]')
+	result=result or string.match(line,'^%w+='..str_reg)
 	result=result or string.match(line,'^%w+={/.+/}[[][^]]-]')
 	result=result or string.match(line,'^%w+={/.+/}[^[]')
 	-- above cannot detect line end with eof,like {/wef/} but {/wef/}aqwe
 	result=result or string.match(line,'^%w+={/.+/}$')
 	local result2=string.match(line,'^$%w+{')
-	result2=result2 or string.match(line,'[[]/.+/]')
+	result2=result2 or string.match(line,''..str_reg)
 	--	result2=result2 or string.match(line,'{/.+/}')
 	result2=result2 or string.match(line,'{/.+/}[[][^]]-]')
 	result2=result2 or string.match(line,'{/.+/}[^[]')
@@ -82,12 +91,12 @@ function parse(self,line)
 	sline=gsub(sline,'([^$])(%w+)[(]([%w\'\"]-)[)]','%1%2:create(%3')
 
 	--0). {/.../} -> cho_chars('...',
-	sline=gsub(sline,'{/(.-)/}[[]',"ch_chars('%1',nil[")
+	sline=gsub(sline,'{/(.-)([(\\\\)]-)/}[[]',"ch_chars('%1%2',nil[")
 
 	-- 1). [/.../ /.../] -> cho_rstr('...'),cho_rstr('...')
 	--	sline=gsub(sline,'/ /',"'),cho_rstr('")
 	sline=gsub(sline,'[[]/',"cho_rstr('")
-	sline=gsub(sline,'/]',"')")
+	sline=gsub(sline,'('..str_zend_reg..')/]',"%1')")
 
 	-- 6). [] -> ,nil)
 	sline=gsub(sline,'[[][]]',',nil)')
@@ -113,3 +122,21 @@ function parse(self,line)
 	end
 	return sline
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

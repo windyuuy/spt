@@ -1,6 +1,6 @@
 bracket={/()/}
 quoet={/"/}
-word={/abcdefghijklmnopqrstuvwxyz_/}[5]
+word={/abcdefghijklmnopqrstuvwxyz_\/}\\/}[5]
 dd=$line('wqekj'){
 	[/print/]
 	bracket('krk')
