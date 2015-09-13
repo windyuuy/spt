@@ -1,7 +1,7 @@
 
 local checker_false=load("checker_false",'checker')
-function init_checker(module)
+function init_checker(module,src)
 
-	copy_module(module,checker_false)
+	copy_module(module,src or checker_false)
 
 end

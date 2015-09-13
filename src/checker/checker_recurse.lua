@@ -1,5 +1,5 @@
 
-module('checker_recursion',package.seeall)
+module('checker_recurse',package.seeall)
 
 function set_recursor(symbol,recursor)
 	assert(type(symbol)=='table','')

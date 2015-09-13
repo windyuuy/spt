@@ -42,6 +42,10 @@ function onway(self)
 	return self.curpos<=self.endpos
 end
 
+function len(self)
+	return self.rawline:len()
+end
+
 function create(self,line)
 	return {
 		rawline=line,
@@ -54,5 +58,6 @@ function create(self,line)
 		snapshot=snapshot,
 		cutline=cutline,
 		onway=onway,
+		len=len,
 	}
 end
