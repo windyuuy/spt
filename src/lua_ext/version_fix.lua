@@ -19,6 +19,13 @@ if(not setfenv)then
 	end
 end
 
+reg_ver=1
+if(_VERSION=='Lua 5.1')then
+	reg_ver=1
+else
+	reg_ver=2
+end
+
 local function ddd()
 	
 end

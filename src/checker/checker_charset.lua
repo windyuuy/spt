@@ -13,7 +13,7 @@ function get_compare_func(self,sub_result_list)
 		local str_obj
 
 --		local charsets,extra_data=self:parse_charsrange(data)
-		data=data:gsub('([\[\]\(\)]\'"])','\%1')
+		data=data:gsub('["\'[[][]]()]','\\%1')
 
 		local cc=lineinfo:cutline(1)
 
