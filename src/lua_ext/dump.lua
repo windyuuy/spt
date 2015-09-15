@@ -5,6 +5,11 @@
 --- @ref http://dearymz.blog.163.com/blog/static/205657420089251655186/
 --
 
+local _tostring=_tostring
+if(not _tostring)then
+	_tostring=tostring
+end
+
 local _print=print
 local function print(x,...)
 	if(type(x)=='table')then
