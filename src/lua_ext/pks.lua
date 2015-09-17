@@ -48,7 +48,7 @@ function module(name,f)
 		_NAME=name,
 	}
 	mod_env._M=mod_env
---	mod_env[name]=mod_env
+	--	mod_env[name]=mod_env
 	--	setmetatable(mod_env,{__index=_G})
 	if(f)then
 		f(mod_env)
@@ -58,60 +58,80 @@ function module(name,f)
 	_G[name]=mod_env
 end
 
-local function _get_loaded_module(mod_full_path)
-	mod_full_path=mod_full_path:gsub('[/\\]\s+[/\\]+','/')
-	mod_full_path=mod_full_path:gsub('[/\\]+','/')
-	return package.loaded[mod_full_path]
+local package_register=package.loaded
+
+function create_raw_loader(config)
+	local preset_path_list=config.preset_path_list
+	local ext_list=config.ext_list
+	local inline_mod_name=config.inline_mod_name
+	local module_loader=config.module_loader
+	local package_register=config.package_register
+
+	local function _get_loaded_module(mod_full_path)
+		mod_full_path=mod_full_path:gsub('[/\\]\s+[/\\]+','/')
+		mod_full_path=mod_full_path:gsub('[/\\]+','/')
+		return package_register[mod_full_path]
+	end
+
+	local function raw_load(name,level,caller_path)
+		level=getflevel(level)
+		--		level=2
+		name=name or ''
+		local mod_name=name:match('[\.](%w+)$') or name
+		name=name:gsub('[\.]','/')
+		local caller_info=debug.getinfo(level)
+		local caller_path=caller_path or caller_info.source
+		local sub_path=caller_path:match('^@?(.*[^/]+)[\.]%w+') or caller_path
+		local caller_mod_path=sub_path:gsub('^@?(.-/)[^/]+$','%1')
+		local caller_name=sub_path:sub(caller_mod_path:len()+1)
+		if(caller_name==inline_mod_name)then
+			caller_name=caller_mod_path:match('/([^/]+)/$')
+			sub_path=caller_mod_path
+			caller_mod_path=caller_mod_path:sub(1,caller_mod_path:len()-caller_name:len()-2)
+		end
+
+		local path_list={
+			sub_path,
+			caller_mod_path,
+		--		_root_path,
+		}
+		table.iextend(path_list,preset_path_list)
+
+		--	local ext_list={
+		--		'.lua',
+		--		'.so',
+		--		'/init.lua',
+		--		'/init.so',
+		--	}
+
+		local mod_full_path,loaded_module,mod_exist
+		for _,lpath in ipairs(path_list)do
+			for _,ext in ipairs(ext_list)do
+				mod_full_path=lpath..name..ext
+				loaded_module=_get_loaded_module(mod_full_path)
+				if(loaded_module~=nil)then return loaded_module,true end
+
+				if(lfs.exist(mod_full_path))then
+					mod_exist=true
+					break
+				end
+			end
+			if(mod_exist)then break end
+		end
+
+		if(not mod_exist)then
+			return nil,false
+		end
+
+		local result=module_loader(mod_full_path,mod_name,name)
+
+		return result,true
+
+	end
+	return raw_load
 end
 
-local function raw_load(name,level)
-	--	level=getflevel(level)
-	level=2
-	name=name or ''
-	local mod_name=name:match('[\.](%w+)$') or name
-	name=name:gsub('[\.]','/')
-	local caller_info=debug.getinfo(level)
-	local caller_path=caller_info.source
-	local sub_path=caller_path:match('^@?(.*[^/]+)[\.]%w+') or caller_path
-	local caller_mod_path=sub_path:gsub('^@?(.-/)[^/]+$','%1')
-	local caller_name=sub_path:sub(caller_mod_path:len()+1)
-	if(caller_name=='init')then
-		caller_name=caller_mod_path:match('/([^/]+)/$')
-		sub_path=caller_mod_path
-		caller_mod_path=caller_mod_path:sub(1,caller_mod_path:len()-caller_name:len()-2)
-	end
-
-	local path_list={
-		sub_path,
-		caller_mod_path,
-		_root_path,
-	}
-
-	local ext_list={
-		'.lua',
-		'.so',
-		'/init.lua',
-		'/init.so',
-	}
-
-	local mod_full_path,loaded_module,mod_exist
-	for _,lpath in ipairs(path_list)do
-		for _,ext in ipairs(ext_list)do
-			mod_full_path=lpath..name..ext
-			loaded_module=_get_loaded_module(mod_full_path)
-			if(loaded_module~=nil)then return loaded_module,true end
-
-			if(lfs.exist(mod_full_path))then
-				mod_exist=true
-				break
-			end
-		end
-		if(mod_exist)then break end
-	end
-
-	if(not mod_exist)then
-		return nil,false
-	end
+local function module_loader(mod_full_path,mod_name,name)
 
 	local var_org=_G[mod_name]
 	assert(var_org==nil)
@@ -132,7 +152,7 @@ local function raw_load(name,level)
 			result=mod_env
 		end
 	end
-	package.loaded[mod_full_path]=result
+	package_register[mod_full_path]=result
 
 	if(type(result)=='table' and getmetatable(result)==_G)then
 		setmetatable(result,nil)
@@ -143,7 +163,28 @@ local function raw_load(name,level)
 		caller_env[mod_name]=result
 	end
 
-	return result,true
-
+	return result
 end
-rload=raw_load
+
+rload=create_raw_loader({
+
+		preset_path_list={
+			--		sub_path,
+			--		caller_mod_path,
+			_root_path,
+		},
+
+		ext_list={
+			'.lua',
+			'.so',
+			'/init.lua',
+			'/init.so',
+		},
+
+		inline_mod_name='init',
+
+		module_loader=module_loader,
+
+		package_register=package_register,
+
+})

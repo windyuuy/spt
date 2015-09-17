@@ -34,3 +34,12 @@ for i=1,5 do
 	print(d[i])
 end
 print(d.sdf,d.e3,d.qew,d.ewf)
+
+setmetatable(a,{__index={454,qew=45}})
+e=exlist.extend(a,b,c)
+look(e)
+assert(e[1]==454)
+for i=1,5 do
+	print(e[i])
+end
+print(e.sdf,e.e3,e.qew,e.ewf)

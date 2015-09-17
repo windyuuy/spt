@@ -1,5 +1,5 @@
 
-module('mark_string',package.seeall)
+--module('mark_string',package.seeall)
 
 function parse(self,line)
 	local chars_letters=ch_chars('abcdefghijklmnopqrstuvwxyz')

@@ -1,6 +1,8 @@
 
 module('runner',package.seeall)
 
+rload('org.exlist')
+
 local parsers=require('sparser.parsers')
 
 function parseline(line)
@@ -17,8 +19,8 @@ function parseline(line)
 	return results[1],rtype
 end
 
-function parsecontent(lines,env)
-	env=env or {}
+function parsecontent(lines)
+	--	env=env or {}
 	local codeline,content
 	local codelines={}
 	if(type(lines)=="table")then
@@ -57,15 +59,18 @@ function exec(content,type,env)
 		end
 		local func=loadstring(content)
 		if(func)then
-			local meta=getmetatable(env)
-			if(not meta or not meta.__index)then
-				setmetatable(env,{__index=_G._sparser_space})
-			else
-				setmetatable(env,{__index=index_func({meta.__index,_G._sparser_space}) } )
-			end
-			setfenv(func,env)
+			--			local meta=getmetatable(env)
+			--			if(not meta or not meta.__index)then
+			--				setmetatable(env,{__index=_G._sparser_space})
+			--			else
+			--				setmetatable(env,{__index=index_func({meta.__index,_G._sparser_space}) } )
+			--			end
+			local envt=exlist.extend({},env,_G._sparser_space)
+			setfenv(func,envt)
 			local ret=func()
-			setmetatable(env,meta)
+			setmetatable(envt,nil)
+			exlist.extend(env,envt)
+			--			setmetatable(env,meta)
 			return env,ret
 		else
 			return debug_execfunc(content)
@@ -104,6 +109,20 @@ function debug_execfunc(content,env)
 	return env
 end
 
+function parsefile(name)
+	local _,content
+	env=env or {}
+	local f=io.open(name)
+	if(f)then
+		content=runner.parsecontent(f:lines())
+		f:close()
+	else
+		print('file not exist:'..name)
+		assert(f,'')
+	end
+	return content
+end
+
 function runfile(name,env)
 	local _,content
 	env=env or {}
@@ -117,3 +136,41 @@ function runfile(name,env)
 	end
 	return env,content
 end
+
+local rd_package_register={}
+
+local function module_loader(mod_full_path,mod_name,name)
+	local result={runfile(mod_full_path,{})}
+	rd_package_register[mod_full_path]=result
+	return result
+end
+
+local rdload=create_raw_loader({
+
+		preset_path_list={
+			--		sub_path,
+			--		caller_mod_path,
+			_root_path,
+		},
+
+		ext_list={
+			'.rd',
+			'/init.rd',
+		},
+
+		inline_mod_name='init',
+
+		module_loader=module_loader,
+
+		package_register=rd_package_register,
+
+})
+
+function refer_rule_module(name,env)
+	local extra_env,content=unpack(rdload(name,2,'/home/happy/workspace/spt/src/test/rule.rd') or {})
+	if(env)then
+		exlist.extend(env,extra_env)
+	end
+end
+
+_G.refer_rule_module=refer_rule_module

@@ -1,5 +1,5 @@
 
-local space=sheet()
+--local space=sheet()
 local names={'str','chars','and','or','not','line','redef','true'}
 
 for k,v in ipairs(names)do
@@ -20,4 +20,4 @@ end
 
 cho_end=cho_true
 
-return space
+--return space

@@ -1,7 +1,9 @@
 
-module('parse_checker',package.seeall)
+--module('parse_checker',package.seeall)
 
-local space=require('sparser.helper')
+--local space=require('sparser.helper')
+local space=rload('helper')
+
 _G._sparser_space=space
 
 function parse(self,line)
