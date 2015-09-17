@@ -1,9 +1,10 @@
 
-require('lua_ext')
+__('lua_ext')
 
-require('checker')
+rload('checker')
 
-require('sparser')
+rload('sparser')
+rload('sparser.runner')
 
 local function main()
 	sheet()

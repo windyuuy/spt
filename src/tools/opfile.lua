@@ -28,3 +28,7 @@ end
 function checkfile(rule,objname)
 	return rule:check(lineinfo:create(io.open(objname,'r'):read()))
 end
+
+function matchline(...) return runner.matchline(...) end
+function can_match(...) return runner.can_match(...) end
+function evalline(...) return runner.evalline(...) end

@@ -1,2 +1,4 @@
 
-requirelist({'runner'},'sparser')
+--requirelist({'runner'},'sparser')
+
+rloadlist({'runner'})

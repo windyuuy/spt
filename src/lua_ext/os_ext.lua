@@ -1,5 +1,24 @@
 
 require('lfs')
+
+local f=io.popen('pwd','r')
+local current_execute_path=f:read()..'/'
+f:close()
+
+--local start_script_execute_full_path=debug.getinfo(6).source
+--print(start_script_execute_full_path)
+--local start_script_execute_path=start_script_execute_full_path:match('^@?(.+)[/\\][^/\\]+$')
+
+_G.fspath={}
+
+function fspath.getdir(fullpath)
+	return fullpath:match('^@?(.+[/\\])[^/\\]+$') or ''
+end
+
+function fspath.is_absolute(name)
+	return (name:find(':') or name:match('^/'))
+end
+
 function detect_submodules(dir,filter)
 	local cur_dir=dir
 	local names={}

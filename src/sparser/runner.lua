@@ -5,6 +5,8 @@ rload('org.exlist')
 
 local parsers=require('sparser.parsers')
 
+local _current_file_path='$_current_file_path'
+
 function parseline(line)
 	local result,type,rtype
 	local results={}
@@ -47,6 +49,18 @@ function evalline(content,env)
 	local parsed_line=parseline(content)
 	local _,v=exec("return "..parsed_line,nil,env)
 	return v,env
+end
+
+function matchline(s,content,env)
+	local v,env=evalline(content,env)
+	local sinfo=lineinfo:create(s)
+	local result=v:check(sinfo)
+	return result,result:index('@rawline') or result:index('@matched')
+end
+
+function can_match(s,content,env)
+	local result,matched=matchline(s,content,env)
+	return matched,result
 end
 
 function exec(content,type,env)
@@ -112,10 +126,16 @@ end
 function parsefile(name)
 	local _,content
 	env=env or {}
+--	name=fspath.getdir(debug.getinfo(3).source)..name
 	local f=io.open(name)
 	if(f)then
+		local _sparser_space=_G._sparser_space
+		local last_path=_sparser_space[_current_file_path]
+		_sparser_space[_current_file_path]=name
 		content=runner.parsecontent(f:lines())
 		f:close()
+		_sparser_space[_current_file_path]=nil
+		_sparser_space[_current_file_path]=last_path
 	else
 		print('file not exist:'..name)
 		assert(f,'')
@@ -128,8 +148,13 @@ function runfile(name,env)
 	env=env or {}
 	local f=io.open(name)
 	if(f)then
+		local _sparser_space=_G._sparser_space
+		local last_path=_sparser_space[_current_file_path]
+		_sparser_space[_current_file_path]=name
 		_,content=runner.runcontent(f:lines(),env)
 		f:close()
+		_sparser_space[_current_file_path]=nil
+		_sparser_space[_current_file_path]=last_path
 	else
 		print('file not exist:'..name)
 		assert(f,'')
@@ -167,7 +192,9 @@ local rdload=create_raw_loader({
 })
 
 function refer_rule_module(name,env)
-	local extra_env,content=unpack(rdload(name,2,'/home/happy/workspace/spt/src/test/rule.rd') or {})
+	--local extra_env,content=unpack(rdload(name,2,'/home/happy/workspace/spt/src/test/rule.rd') or {})
+	local cur_path=_G._sparser_space[_current_file_path]
+	local extra_env,content=unpack(rdload(name,2,cur_path) or {})
 	if(env)then
 		exlist.extend(env,extra_env)
 	end

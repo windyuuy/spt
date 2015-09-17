@@ -48,7 +48,7 @@ function module(name,f)
 		_NAME=name,
 	}
 	mod_env._M=mod_env
-	--	mod_env[name]=mod_env
+	mod_env[name]=mod_env
 	--	setmetatable(mod_env,{__index=_G})
 	if(f)then
 		f(mod_env)
@@ -79,8 +79,12 @@ function create_raw_loader(config)
 		name=name or ''
 		local mod_name=name:match('[\.](%w+)$') or name
 		name=name:gsub('[\.]','/')
-		local caller_info=debug.getinfo(level)
-		local caller_path=caller_path or caller_info.source
+		if(caller_path)then
+--			caller_path=lfs.absolute_path(caller_path)
+		else
+			local caller_info=debug.getinfo(level)
+			caller_path=caller_info.source
+		end
 		local sub_path=caller_path:match('^@?(.*[^/]+)[\.]%w+') or caller_path
 		local caller_mod_path=sub_path:gsub('^@?(.-/)[^/]+$','%1')
 		local caller_name=sub_path:sub(caller_mod_path:len()+1)
@@ -123,7 +127,7 @@ function create_raw_loader(config)
 			return nil,false
 		end
 
-		local result=module_loader(mod_full_path,mod_name,name)
+		local result=module_loader(mod_full_path,mod_name,name,level)
 
 		return result,true
 
@@ -131,13 +135,15 @@ function create_raw_loader(config)
 	return raw_load
 end
 
-local function module_loader(mod_full_path,mod_name,name)
+local function module_loader(mod_full_path,mod_name,name,level)
+	level=getflevel(level)
 
 	local var_org=_G[mod_name]
 	assert(var_org==nil)
 	local mod=loadfile(mod_full_path)
 	local result
 
+	local using_module_func=false
 	if(mod~=nil)then
 		local mod_env
 		mod_env={
@@ -148,6 +154,12 @@ local function module_loader(mod_full_path,mod_name,name)
 		setmetatable(mod_env,{__index=_G})
 		setfenv(mod,mod_env)
 		result=mod()
+		
+		if(type(_G[mod_name])=='table' and _G[mod_name]._M==_G[mod_name])then
+			using_module_func=true
+			mod_env=_G[mod_name]
+		end
+			
 		if(result==nil)then
 			result=mod_env
 		end
@@ -158,7 +170,7 @@ local function module_loader(mod_full_path,mod_name,name)
 		setmetatable(result,nil)
 	end
 
-	local caller_env=getfenv(2)
+	local caller_env=getfenv(level)
 	if(type(caller_env)=='table' or type(caller_env)=='userdata')then
 		caller_env[mod_name]=result
 	end
@@ -188,3 +200,10 @@ rload=create_raw_loader({
 		package_register=package_register,
 
 })
+
+function rloadlist(list,caller_path,level)
+	level=getflevel(level)
+	for _,name in ipairs(list)do
+		rload(name,level,caller_path)
+	end
+end
