@@ -7,14 +7,14 @@ require('sparser')
 
 local function main()
 
---		local sd=runner.parseline("kk=$line(){[/kjwlef/ /lkjwlekjf/] bracket op $or(){$$sump word}[3,(4,5),(7,+)] un_bracket()[1]}[]")
+	--		local sd=runner.parseline("kk=$line(){[/kjwlef/ /lkjwlekjf/] bracket op $or(){$$sump word}[3,(4,5),(7,+)] un_bracket()[1]}[]")
 	--	sd=runner.parseline('kk=$str(){"lkjlk"}[]')
 	--	sd=runner.parseline('kk=$line(){[/kjwlef/ /lkjwlekjf/] $str(){"lkwjelf"}[]}[]')
 	--	local sd=runner.parseline('kk=[/wfewef/]')
 
---		local sd2=runner.parseline("kk=$line{[/kjwlef/ /lkjwlekjf/] bracket op $or{$$sump word}[3,(4,5),(7,+)] un_bracket[1]}")
---		local sd2=runner.parseline("kk=$line{bracket op $or{$$sump word}[3,(4,5),(7,+)] un_bracket[1]}")
---		sd2=runner.parseline('kk=$str(){"lkjlk"}')
+	--		local sd2=runner.parseline("kk=$line{[/kjwlef/ /lkjwlekjf/] bracket op $or{$$sump word}[3,(4,5),(7,+)] un_bracket[1]}")
+	--		local sd2=runner.parseline("kk=$line{bracket op $or{$$sump word}[3,(4,5),(7,+)] un_bracket[1]}")
+	--		sd2=runner.parseline('kk=$str(){"lkjlk"}')
 	--	sd2=runner.parseline('kk=$line(){[/kjwlef/ /lkjwlekjf/] $str(){"lkwjelf"}[]}[]')
 	--	local sd2=runner.parseline('kk=[/wfewef/]')
 	--	local sd2=runner.parseline('[/wfewef/]')

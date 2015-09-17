@@ -7,14 +7,14 @@ local names=detect_submodules(1,'checker_(%w+)')
 
 ------------------------------------
 -- preload checkers
--- 
+--
 for k,name in ipairs(names)do
 	_G['checker_'..name]=load('checker_'..name,'checker')
 end
 
 ------------------------------------
 -- define checker alias names
--- 
+--
 local funcs={}
 for k,v in ipairs(names)do
 	funcs['ch_'..v]=function(list,...)

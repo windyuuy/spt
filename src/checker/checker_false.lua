@@ -55,7 +55,7 @@ function arrange_count_ranges(count_ranges)
 end
 
 function _setenv(env)
---	if(setfenv)then return end
+	--	if(setfenv)then return end
 	if(env)then
 		setfenv(2,env)
 	else
@@ -131,11 +131,11 @@ function compare_func(env)
 	sub_result_list[#sub_result_list+1]=cur_sub_result
 	local proc_relation=model.proc_relation
 	local env_original=getfenv(proc_relation)
-		setfenv(proc_relation,getfenv(1))
+	setfenv(proc_relation,getfenv(1))
 	for k,checker in ipairs(checker_list)do
 		if(proc_relation(checker,getfenv(1)))then break end
 	end
-		setfenv(proc_relation,env_original)
+	setfenv(proc_relation,env_original)
 
 	if(matched)then
 		str_obj=table.concat(sub_rawline_list)
@@ -170,9 +170,9 @@ function get_compare_func(self,sub_result_list)
 		table.copy(env,env_extra)
 		setmetatable(env,getmetatable(env_original))
 
-				setfenv(compare_func,env)
+		setfenv(compare_func,env)
 		matched,str_obj=compare_func(env)
-				setfenv(compare_func,env_original)
+		setfenv(compare_func,env_original)
 
 		return matched,str_obj
 	end

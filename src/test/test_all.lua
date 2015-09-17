@@ -5,6 +5,7 @@ assert(
 	require_tests({
 		'test_debug_ext',
 		'test_my_ext',
+		'test_org',
 		'test_chars',
 		'test_charset',
 		'test_normal',

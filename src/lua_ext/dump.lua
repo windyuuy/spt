@@ -30,6 +30,7 @@ end
 
 function var_dump(data, max_level, prefix)
 	assert(var_dump~=print,'')
+
 	if type(prefix) ~= "string" then
 		prefix = ""
 	end
@@ -78,3 +79,11 @@ end
 function rdump(data,max_level)
 	var_dump(data, max_level or 2)
 end
+
+function lookover(data,max_level)
+	var_dump(data,type(max_level)=='number' and max_level or 1)
+end
+
+look=lookover
+
+

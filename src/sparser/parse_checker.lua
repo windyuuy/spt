@@ -14,11 +14,11 @@ function parse(self,line)
 	local str_end_reg=str_zend_reg..'/]'
 	local str_body_reg='[^('..str_end_reg..')]'
 	local str_reg='[[]/.+'..str_end_reg
-	
+
 	local chars_zend_reg=str_zend_reg
 	local chars_end_reg=chars_zend_reg..'/}'
 	local chars_body_reg='[^('..chars_end_reg..')]'
-	
+
 	local result=string.match(line,'^%w+=$%w+')
 	result=result or string.match(line,'^%w+='..str_reg)
 	result=result or string.match(line,'^%w+={/.+/}[[][^]]-]')

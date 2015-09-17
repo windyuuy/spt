@@ -5,15 +5,15 @@ require('checker')
 
 local function main()
 	local info_hello=lineinfo:create('hklphklpoij pion;nl')
-	
+
 	local ch_t=ch_true('','we',{2})
-	
+
 	local result=ch_t:check(info_hello,{3})
-	
+
 	rdump(result)
-	
+
 	print(result:index('@rawline'))
-	
+
 	local rresult=ch_t:raw_check(info_hello,{3})
 	rdump(rresult)
 	print(rresult[3])

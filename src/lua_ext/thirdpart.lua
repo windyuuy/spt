@@ -11,12 +11,12 @@
 
 -- config path of lua ext-lib manualy there
 if(_VERSION=='Lua 5.1')then
---	package.path=package.path..';/home/happy/devs/proc/PCOM/lua/5.1/lua/?.lua;D:/PCOM/lua/5.1/lua/?.lua;'
+	--	package.path=package.path..';/home/happy/devs/proc/PCOM/lua/5.1/lua/?.lua;D:/PCOM/lua/5.1/lua/?.lua;'
 	package.cpath=';/home/happy/.luarocks/lib/lua/5.1/?.so;'..package.cpath
 	package.path=';/home/happy/.luarocks/share/lua/5.1/?.lua;'..package.path
 	package.cpath=package.cpath..';/home/happy/softs/lua-5.1.4/lib/lua/5.1/?.so;'
 	package.cpath=package.cpath..';/usr/lib/lua/5.1/?.so;'
---	package.cpath=package.cpath..';D:/PCOM/lua/5.1/clibs/?.dll;'
+	--	package.cpath=package.cpath..';D:/PCOM/lua/5.1/clibs/?.dll;'
 elseif(_VERSION=='Lua 5.2')then
 	package.path=package.path..';/home/happy/devs/proc/PCOM/lua/5.1/lua/?.lua;D:/PCOM/lua/5.1/lua/?.lua;'
 	package.cpath=package.cpath..';/usr/lib/lua/5.2/?.so;'

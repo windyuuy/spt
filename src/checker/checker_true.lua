@@ -9,13 +9,13 @@ function get_max_repeat_times(compare,lineinfo,count_ranges)
 
 	local lineinfo_copy=lineinfo:clone()
 	local matched
-	
+
 	repeat_times=count_ranges[#count_ranges][2]
 	local rawline=lineinfo_copy:cutline(repeat_times)
 	sub_rawline_list[#sub_rawline_list+1]=rawline
-	
+
 	matched=true
-	
+
 	return matched,repeat_times,sub_rawline_list,lineinfo_copy
 end
 

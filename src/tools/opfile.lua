@@ -6,7 +6,7 @@ function lines_in_file(name,...)
 end
 
 function runfile(name,env)
---	return runner.runfile(name,env)
+	--	return runner.runfile(name,env)
 	local f=io.open(name,'r')
 	local content=f:read('*all')
 	f:close()

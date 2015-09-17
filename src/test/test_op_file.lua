@@ -14,7 +14,7 @@ local function main()
 	sheet('kkk')
 	lfs.chdir('./src/test')
 
---	print('klwjlej')
+	--	print('klwjlej')
 	local _,content=runner.runfile('rule.rd',kkk)
 	print(content)
 	--	local f=io.open('rule.rd')

@@ -12,7 +12,7 @@ function detect_submodules(dir,filter)
 	end
 
 	filter=filter or '^[^/.].+'
-	
+
 	for filename in lfs.dir(cur_dir)do
 		local name=string.match(filename,filter)
 		if(name)then
@@ -20,4 +20,14 @@ function detect_submodules(dir,filter)
 		end
 	end
 	return names
+end
+
+function lfs.exist(fn)
+	local f=io.open(fn,'r')
+	if(f)then
+		f:close()
+		return true
+	else
+		return false
+	end
 end

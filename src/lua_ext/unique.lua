@@ -18,6 +18,32 @@ function table.copy(self,tt,tlist)
 	end
 end
 
+function table.iextend(t1,t2)
+	for k, v in ipairs(t2) do
+		t1[#t1+1]=v
+	end
+end
+
+function table.exclude_by_value(t,exclude_list)
+	for _, item in ipairs(exclude_list) do
+		table.remove_value(t,item)
+	end
+end
+
+function table.remove_value(t,value)
+	for i,v in pairs(t) do
+		if(v==value)then
+			if(type(i)=="number")then
+				repeat
+					table.remove(t,i)
+				until(t[i]~=value)
+			else
+				rils[#rils+1]=i
+			end
+		end
+	end
+end
+
 function copy_module(t1,t2)
 	local t3=table.makeclone(t2)
 	t3._M=nil

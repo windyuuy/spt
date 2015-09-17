@@ -9,7 +9,7 @@ local function main()
 	sheet('kkk')
 	lfs.chdir('./src/test')
 
---	print('klwjlej')
+	--	print('klwjlej')
 	runner.runfile('rule.rd')
 	--	local f=io.open('rule.rd')
 	--	runner.runcontent(f:lines())

@@ -17,7 +17,7 @@ function parseline(line)
 	return results[1],rtype
 end
 
-function runcontent(lines,env)
+function parsecontent(lines,env)
 	env=env or {}
 	local codeline,content
 	local codelines={}
@@ -32,8 +32,19 @@ function runcontent(lines,env)
 		end
 	end
 	content=table.concat(codelines,'\n')
+	return content
+end
+
+function runcontent(lines,env)
+	local content=parsecontent(lines,env)
 	return exec(content,false,env),content
 
+end
+
+function evalline(content,env)
+	local parsed_line=parseline(content)
+	local _,v=exec("return "..parsed_line,nil,env)
+	return v,env
 end
 
 function exec(content,type,env)
@@ -46,8 +57,6 @@ function exec(content,type,env)
 		end
 		local func=loadstring(content)
 		if(func)then
---			local env=getfenv(index)
---			setfenv(func,(env and env._M or _G._M or env))
 			local meta=getmetatable(env)
 			if(not meta or not meta.__index)then
 				setmetatable(env,{__index=_G._sparser_space})
@@ -60,7 +69,6 @@ function exec(content,type,env)
 			return env,ret
 		else
 			return debug_execfunc(content)
---			return nil
 		end
 	end
 end

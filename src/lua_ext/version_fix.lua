@@ -27,21 +27,21 @@ else
 end
 
 local function ddd()
-	
+
 end
 
 local function t()
---	print(_getfenv(ddd))
+	--	print(_getfenv(ddd))
 	local a={}
 	setmetatable(a,{__index=_G})
---	_ENV=a
+	--	_ENV=a
 	setfenv(1,a)
 	c=23
---	local env=_ENV--getfenv(1)
+	--	local env=_ENV--getfenv(1)
 	local env=getfenv(1)
---	print(c==env.c)
---	print(_G.c)
-	
+	--	print(c==env.c)
+	--	print(_G.c)
+
 end
 
 t()
