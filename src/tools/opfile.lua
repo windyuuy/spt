@@ -7,6 +7,7 @@ end
 
 function runfile(name,env)
 	--	return runner.runfile(name,env)
+	name=fspath.abs_path(name,3)
 	local f=io.open(name,'r')
 	local content=f:read('*all')
 	f:close()
@@ -26,6 +27,7 @@ function runfile(name,env)
 end
 
 function checkfile(rule,objname)
+	objname=fspath.abs_path(objnamej)
 	return rule:check(lineinfo:create(io.open(objname,'r'):read()))
 end
 

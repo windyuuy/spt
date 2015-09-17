@@ -123,10 +123,10 @@ function debug_execfunc(content,env)
 	return env
 end
 
-function parsefile(name)
+function parsefile(name,level)
+	level=getflevel(level)
 	local _,content
-	env=env or {}
---	name=fspath.getdir(debug.getinfo(3).source)..name
+	name=fspath.abs_path(name,level+1)
 	local f=io.open(name)
 	if(f)then
 		local _sparser_space=_G._sparser_space
@@ -143,9 +143,11 @@ function parsefile(name)
 	return content
 end
 
-function runfile(name,env)
+function runfile(name,env,level)
+	level=getflevel(level)
 	local _,content
 	env=env or {}
+	name=fspath.abs_path(name,level+1)
 	local f=io.open(name)
 	if(f)then
 		local _sparser_space=_G._sparser_space

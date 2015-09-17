@@ -12,11 +12,28 @@ f:close()
 _G.fspath={}
 
 function fspath.getdir(fullpath)
-	return fullpath:match('^@?(.+[/\\])[^/\\]+$') or ''
+	return fullpath:match('^@?(.+[/\\])[^/\\]-$')
 end
 
-function fspath.is_absolute(name)
+function fspath.is_abspath(name)
 	return (name:find(':') or name:match('^/'))
+end
+
+function fspath.abs_path(name,level)
+	level=getflevel(level)
+	local fullpath
+	if(fspath.is_abspath(name))then
+		fullpath=name
+	else
+		fullpath=debug.getinfo(level).source
+		fullpath=fspath.getdir(fullpath)
+		if(fullpath)then
+			fullpath=fullpath..name
+		else
+			fullpath=current_execute_path..name
+		end
+	end
+	return fullpath
 end
 
 function detect_submodules(dir,filter)

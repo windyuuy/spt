@@ -16,7 +16,7 @@ local function main()
 	lfs.chdir('./src/test')
 
 	--	print('klwjlej')
-	local _,content=runfile('/home/happy/workspace/spt/src/test/rule2.rd',kkk)
+	local _,content=runfile('rule2.rd',kkk)
 	print(content)
 	--	local f=io.open('rule.rd')
 	--	runner.runcontent(f:lines())
