@@ -31,6 +31,7 @@ end
 local stringy=require('stringy')
 table.copy(string,stringy,{
 	'split',
+	'strip',
 	'count',
 	'startswith',
 	'endswith',

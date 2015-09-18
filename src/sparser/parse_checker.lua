@@ -50,6 +50,7 @@ function parse(self,line)
 	end
 
 	--------------
+	-- 5). <whitespace>}<whitespace><endofline> -> }
 	-- 0). ^/.../$ ->  cho_chars('...')
 	-- 1). $name<whitespace or }> -> $name{}<$1>
 	-- 1). $name{ -> $name(){
@@ -59,6 +60,7 @@ function parse(self,line)
 	-- 4). name(alias)<whitespace or }> -> name(alias)[]
 
 	--	sline=gsub(sline,'^{/(.+)/}$',"ch_charset('%1'")
+	sline=gsub(sline,'%s+}%s-$','}')
 	sline=gsub(sline,'$(%w+)([ }])','$%1(){}[]%2')
 	sline=gsub(sline,'$(%w+){','$%1(){')
 	sline=gsub(sline,'}}','} }')
@@ -74,6 +76,7 @@ function parse(self,line)
 	-- 3). (-,+) -> ('-','+')
 	-- 4). $name(alias){ -> cho_name(alias,{
 	-- 5). name(alias) -> name:create(alias
+	--10). $chars(name){/.../} -> cho_chars('...',
 	--0). {/.../} -> cho_chars('...',
 	-- 1). [/.../ /.../] -> cho_rstr('...'),cho_rstr('...')
 	-- 6). [] -> ,nil)
@@ -87,6 +90,8 @@ function parse(self,line)
 	-- 3). (-,+) -> ('-','+')
 	sline=gsub(sline,'([(,])([+-])([),])',"%1'%2'%3")
 
+	-- 10). $chars(name){/.../} -> cho_chars('...',
+	sline=gsub(sline,'$chars[\(]([%w\'"]+)[\)]{/(.-)([(\\\\)]-)/}[[]',"ch_charset('%2%3','%1'[")
 	-- 4). $name(alias){ -> cho_name(alias,{
 	sline=gsub(sline,'$(%w+)[(]([%w\"\']-)[)]{','cho_%1(%2,{')
 	-- 5). name(alias) -> name:create(alias
@@ -117,7 +122,7 @@ function parse(self,line)
 	sline=gsub(sline,'[(],','(nil,')
 
 	-- 9). whitespace -> ,
-	sline=gsub(sline,' ',',')
+	sline=gsub(sline,'([^\'"]) ([^\'"])','%1,%2')
 
 	if(result)then
 		sline=table.concat({markline,'=',sline})

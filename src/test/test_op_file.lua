@@ -29,6 +29,15 @@ local function main()
 	print(result:index('krk>@rawline'))
 
 	hf:close()
+	
+	print(runner.matchline('hellokjlwesdf e',
+	[[
+		$line{
+			[/hello/ /kjlwe/] 
+			$chars(lkjf){/ a-z/}[5]
+		}
+	]]):index('@rawline'))
+
 end
 
 print(socket.gettime())
