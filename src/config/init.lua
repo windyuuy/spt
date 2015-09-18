@@ -1,5 +1,5 @@
 
-_DEBUG=0
+_DEBUG=1
 _root_path='/home/happy/workspace/spt/src/'
 
 _rd_config={

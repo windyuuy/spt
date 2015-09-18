@@ -1,0 +1,9 @@
+bracket={/()/}
+single_quote={/'/}
+double_quote={/"/}
+quote={/"'/}
+___test={/e"f\\e'/}
+word={/abcdefghijklmnopqrstuvwxyz_/}[5]
+tab={/\t/}
+ednd=$not{tab}
+whitespace={/ /}

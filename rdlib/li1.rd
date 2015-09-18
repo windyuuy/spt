@@ -1,1 +1,0 @@
-ednd=$not{tab}

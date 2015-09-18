@@ -1,16 +1,14 @@
-bracket={/()/}
-quoet={/"/}
-word={/abcdefghijklmnopqrstuvwxyz_\/}\\/}[5]
+#base
 dd=$line('wqekj'){
 	[/print/]
 	bracket('krk')
 	
 	<<< quoet
 	
-	quoet
+	quote
 	<<< lkjwefw
 	word('wlekj')
-	quoet('lkl')
+	quote('lkl')
 	>>> lwjkelkwjelkjwlek
 	bracket('kl')
 	>>> lkwjelfj

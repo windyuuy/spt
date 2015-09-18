@@ -16,7 +16,7 @@ local function main()
 
 	local ch_sew=ch_str('hklp','wle',{2})
 	local rs2=ch_sew:raw_check(info_hello)
-	--	rdump(rs2)
+		-- rdump(rs2)
 
 	local chd=ch_line({ch_sew})
 	chd:check(info_hello)

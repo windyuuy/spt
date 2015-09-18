@@ -21,18 +21,21 @@ function parse(self,line)
 	local chars_end_reg=chars_zend_reg..'/}'
 	local chars_body_reg='[^('..chars_end_reg..')]'
 
-	local result=string.match(line,'^%w+=$%w+')
-	result=result or string.match(line,'^%w+='..str_reg)
-	result=result or string.match(line,'^%w+={/.+/}[[][^]]-]')
-	result=result or string.match(line,'^%w+={/.+/}[^[]')
+	local BEGIN_WITH='^'
+	local WITH_END='$'
+	local WORD_PATTERN='[_%w]+'
+	local result=string.match(line,BEGIN_WITH..WORD_PATTERN..'=$'..WORD_PATTERN..'')
+	result=result or string.match(line,BEGIN_WITH..WORD_PATTERN..'='..str_reg)
+	result=result or string.match(line,BEGIN_WITH..WORD_PATTERN..'={/.+/}[[][^]]-]')
+	result=result or string.match(line,BEGIN_WITH..WORD_PATTERN..'={/.+/}[^[]')
 	-- above cannot detect line end with eof,like {/wef/} but {/wef/}aqwe
-	result=result or string.match(line,'^%w+={/.+/}$')
-	local result2=string.match(line,'^$%w+{')
+	result=result or string.match(line,BEGIN_WITH..WORD_PATTERN..'={/.+/}'..WITH_END)
+	local result2=string.match(line,'^$'..WORD_PATTERN..'{')
 	result2=result2 or string.match(line,''..str_reg)
 	--	result2=result2 or string.match(line,'{/.+/}')
 	result2=result2 or string.match(line,'{/.+/}[[][^]]-]')
 	result2=result2 or string.match(line,'{/.+/}[^[]')
-	result2=result2 or string.match(line,'{/.+/}[^[]$')
+	result2=result2 or string.match(line,'{/.+/}[^[]'..WITH_END)
 
 	if(not (result or result2))then
 		return nil
@@ -50,6 +53,7 @@ function parse(self,line)
 	end
 
 	--------------
+	-- 6). <[{>/'"/<}]> -> <[{>/\'\"<}]>
 	-- 5). <whitespace>}<whitespace><endofline> -> }
 	-- 0). ^/.../$ ->  cho_chars('...')
 	-- 1). $name<whitespace or }> -> $name{}<$1>
@@ -60,13 +64,23 @@ function parse(self,line)
 	-- 4). name(alias)<whitespace or }> -> name(alias)[]
 
 	--	sline=gsub(sline,'^{/(.+)/}$',"ch_charset('%1'")
-	sline=gsub(sline,'%s+}%s-$','}')
-	sline=gsub(sline,'$(%w+)([ }])','$%1(){}[]%2')
-	sline=gsub(sline,'$(%w+){','$%1(){')
+--	local cur_pos=1
+--	local tlines={}
+--	for seg,i,j in string.gmatch(sline,'{/('..chars_body_reg..'+)'..str_zend_reg..'/}') do
+--		tlines[#tlines+1]=sline:sub(cur_pos,i)
+--		tlines[#tlines+1]=sline:sub(i,j):gsub('('..str_zend_reg..')([\'\"])','%1\\%2')
+--		cur_pos=j
+--	end
+	sline=gsub(sline,'({/[^\\]-[\\]-[^\\]-)([\'\"])(.-/})','%1\\%2%3')
+	sline=gsub(sline,'({/[^\\]-[\\]-[^\\]-\\[\'\"][^\\]-[\\]-[^\\]-)([\'\"])(.-/})','%1\\%2%3')
+	
+	sline=gsub(sline,'%s+}%s-'..WITH_END,'}')
+	sline=gsub(sline,'$('..WORD_PATTERN..')([ }])','$%1(){}[]%2')
+	sline=gsub(sline,'$('..WORD_PATTERN..'){','$%1(){')
 	sline=gsub(sline,'}}','} }')
 	sline=gsub(sline,'} ','}[]')
-	sline=gsub(sline,'}$','}[]')
-	sline=gsub(sline,'([^$]%w+)[[]','%1()[')
+	sline=gsub(sline,'}'..WITH_END,'}[]')
+	sline=gsub(sline,'([^$]'..WORD_PATTERN..')[[]','%1()[')
 	sline=gsub(sline,'([^$][(][%w\'\"]+[)])[ }]','%1[] ')
 
 	--	print(sline)
@@ -85,7 +99,7 @@ function parse(self,line)
 	-- 9). whitespace -> ,
 
 	-- 2). $$name -> recursion
-	sline=gsub(sline,'$$%w+','recursion')
+	sline=gsub(sline,'$$'..WORD_PATTERN..'','recursion')
 
 	-- 3). (-,+) -> ('-','+')
 	sline=gsub(sline,'([(,])([+-])([),])',"%1'%2'%3")
@@ -93,9 +107,9 @@ function parse(self,line)
 	-- 10). $chars(name){/.../} -> cho_chars('...',
 	sline=gsub(sline,'$chars[\(]([%w\'"]+)[\)]{/(.-)([(\\\\)]-)/}[[]',"ch_charset('%2%3','%1'[")
 	-- 4). $name(alias){ -> cho_name(alias,{
-	sline=gsub(sline,'$(%w+)[(]([%w\"\']-)[)]{','cho_%1(%2,{')
+	sline=gsub(sline,'$('..WORD_PATTERN..')[(]([%w\"\']-)[)]{','cho_%1(%2,{')
 	-- 5). name(alias) -> name:create(alias
-	sline=gsub(sline,'([^$])(%w+)[(]([%w\'\"]-)[)]','%1%2:create(%3')
+	sline=gsub(sline,'([^$])('..WORD_PATTERN..')[(]([%w\'\"]-)[)]','%1%2:create(%3')
 
 	--0). {/.../} -> cho_chars('...',
 	sline=gsub(sline,'{/(.-)([(\\\\)]-)/}[[]',"ch_charset('%1%2',nil[")
