@@ -182,16 +182,9 @@ end
 
 local rdload=create_raw_loader({
 
-		preset_path_list={
-			--		sub_path,
-			--		caller_mod_path,
-			_root_path,
-		},
+		preset_path_list=_rd_config.preset_rd_path_list,
 
-		ext_list={
-			'.rd',
-			'/init.rd',
-		},
+		ext_list=_rd_config.preset_rd_ext_list,
 
 		inline_mod_name='init',
 

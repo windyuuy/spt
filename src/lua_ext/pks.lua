@@ -66,6 +66,12 @@ function create_raw_loader(config)
 	local inline_mod_name=config.inline_mod_name
 	local module_loader=config.module_loader
 	local package_register=config.package_register
+	
+	for k,v in ipairs(preset_path_list) do
+		if(string.match(v,'[^/\\]$'))then
+			preset_path_list[k]=v..'/'
+		end
+	end
 
 	local function _get_loaded_module(mod_full_path)
 		mod_full_path=mod_full_path:gsub('[/\\]\s+[/\\]+','/')
