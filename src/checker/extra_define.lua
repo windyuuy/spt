@@ -1,5 +1,6 @@
 
 checker_recursion=checker_recurse
+ch_reg=ch_regular
 
 function ch_repeat(unit,...)
 	return ch_line({unit},...)

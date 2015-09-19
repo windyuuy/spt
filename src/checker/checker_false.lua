@@ -201,6 +201,8 @@ function check(self,lineinfo,count_ranges)
 
 	local rawline
 	rawline=table.concat(sub_rawline_list)
+--	if(not matched and rawline=='')then rawline=nil end
+	assert(rawline)
 
 	local checker={checker_name=self.name,checker_alias=self.alias}
 	setmetatable(checker,{__index=self})
@@ -222,6 +224,9 @@ function check(self,lineinfo,count_ranges)
 	setmetatable(result,{__index=result_proto})
 
 	self.t_result=result
+	
+--	assert((result.matched and result.rawline) or result.rawline==nil,'result organized uncorrect')
+
 	return result
 end
 

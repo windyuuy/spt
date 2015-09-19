@@ -11,6 +11,11 @@ function copy_module(t1,t2)
 
 end
 
+function myassert(cond,tip,level)
+	if(not cond)then
+		error(tip,level or 2)
+	end
+end
 --
 --function string.split(s,d)
 --	local lines={}

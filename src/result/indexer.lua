@@ -41,9 +41,9 @@ function index(self,node_path,...)
 		if(attr and type(attr)=='function')then
 			attr=attr(node,...)
 		end
-		if(not attr)then
+		if(attr==nil)then
 			local attr_func=result_indexer[attr_name]
-			attr=attr_func(node,...)
+			if(type(attr_func)=='function')then attr=attr_func(node,...) end
 		end
 
 		assert(attr~=nil,'')

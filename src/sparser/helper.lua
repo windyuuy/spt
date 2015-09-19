@@ -1,6 +1,7 @@
 
 --local space=sheet()
-local names={'str','chars','and','or','not','line','redef','true'}
+--local names2={'str','chars','and','or','not','line','redef','true','regular'}
+local names=rload('checker').__checker_list
 
 for k,v in ipairs(names)do
 	local func
@@ -19,5 +20,6 @@ cho_rstr=function(ss,...)
 end
 
 cho_end=cho_true
+cho_reg=cho_regular
 
 --return space

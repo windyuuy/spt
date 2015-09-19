@@ -17,7 +17,11 @@ function parseline(line)
 			rtype=type
 		end
 	end
-	assert(#results==1,'')
+	if(#results~=1)then
+		look(results)
+		error('result num ~= 1')
+		assert(#results==1,'')
+	end
 	return results[1],rtype
 end
 
@@ -57,13 +61,15 @@ function matchline(s,content,env)
 	content=content:gsub('%s-\n%s*{','{')
 	content=content:gsub('%s-\n%s*',' ')
 	content=string.strip(content)
---	content=content:gsub('^%s+','')
---	content=content:gsub('%s+$','')
+	--	content=content:gsub('^%s+','')
+	--	content=content:gsub('%s+$','')
 	local v,env=evalline(content,env)
-	print(parseline(content))
+	if(_DEBUG==2)then
+		print(parseline(content))
+	end
 	local sinfo=lineinfo:create(s)
 	local result=v:check(sinfo)
-	return result,result:index('@rawline') or result:index('@matched')
+	return result,result:index('@matched') and result:index('@rawline')
 end
 
 function can_match(s,content,env)

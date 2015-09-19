@@ -1,7 +1,9 @@
 
 require('checker.preload')
 
-local names=detect_submodules(1,'checker_(%w+)')
+local names=detect_submodules(1,'checker_([_%w]+)')
+
+__checker_list=names
 
 --local names={'str','chars','recurse','and','or','not','line','redef','true'}
 
@@ -24,7 +26,7 @@ for k,v in ipairs(names)do
 end
 table.copy(_G,funcs)
 
-result_indexer=load('result.indexer')
+result_indexer=rload('result.indexer')
 
 require('result.join')
 
