@@ -1,4 +1,8 @@
 
+if(not __)then
+	__=require
+end
+
 require('config')
 
 require('lua_ext.pks')
