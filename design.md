@@ -80,3 +80,5 @@ frame-run{checker->parser->runtime-coder}
 
 增加矩阵
 从外部增加组件
+丰富库
+稳固测试
