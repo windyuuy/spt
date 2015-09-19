@@ -54,7 +54,7 @@ function module(name,f)
 	if(f)then
 		f(mod_env)
 	end
-	
+
 	package_register[name]=mod_env
 	setfenv(2,mod_env)
 	_G[name]=mod_env
@@ -105,29 +105,41 @@ function create_raw_loader(config)
 		}
 		table.iextend(path_list,preset_path_list)
 
-		local mod_full_path,loaded_module,mod_exist
-		for _,lpath in ipairs(path_list)do
-			for _,ext in ipairs(ext_list)do
-				mod_full_path=lpath..given_mod_path..ext
-				loaded_module=_get_loaded_module(mod_full_path)
-				if(loaded_module~=nil)then
-					register_to_fenv(level,mod_name,loaded_module)
-					return loaded_module,true
-				end
+		local function detect_module_in_list(path_list,ext_list,mod_name)
+			local mod_full_path,loaded_module,mod_exist
+			for _,lpath in ipairs(path_list)do
+				for _,ext in ipairs(ext_list)do
+					mod_full_path=lpath..given_mod_path..ext
+					loaded_module=_get_loaded_module(mod_full_path)
+					if(loaded_module~=nil)then
+						return nil,loaded_module
+					end
 
-				if(lfs.exist(mod_full_path))then
-					mod_exist=true
-					break
+					if(lfs.exist(mod_full_path))then
+						mod_exist=true
+						break
+					end
 				end
+				if(mod_exist)then break end
 			end
-			if(mod_exist)then break end
+
+			if(not mod_exist)then
+				return nil
+			end
+			return mod_full_path,nil
 		end
 
-		if(not mod_exist)then
+		local mod_full_path,loaded_module=detect_module_in_list(path_list,ext_list,mod_name)
+		if(not mod_full_path and not loaded_module)then
 			look(path_list)
 			error('raw load module failed: '..name..' dosen\'t exist',2)
 			assert(false)
 			return nil,false
+		end
+		
+		if(loaded_module)then
+			register_to_fenv(level,mod_name,loaded_module)
+			return loaded_module,true
 		end
 
 		local result=module_loader(mod_full_path,mod_name,given_mod_path,level)
@@ -171,9 +183,9 @@ local function module_loader(mod_full_path,mod_name,name,level)
 	mod_full_path=fspath.tidy_path(mod_full_path)
 	package_register[mod_full_path]=result
 
---	if(type(result)=='table' and getmetatable(result).__index==_G)then
---		setmetatable(result,nil)
---	end
+	--	if(type(result)=='table' and getmetatable(result).__index==_G)then
+	--		setmetatable(result,nil)
+	--	end
 
 	register_to_fenv(level,mod_name,result)
 
