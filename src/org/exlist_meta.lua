@@ -46,9 +46,6 @@ end
 
 function indexvalue(self,k)
 	local result
---	result=rawget(self,k)
---	if(result~=nil)then return result end
---	local meta=getmetatable(self)
 	local exlist=exlist_meta.get_exlist(self)
 	if(exlist)then
 		for _,item in ipairs(exlist) do
@@ -60,12 +57,8 @@ function indexvalue(self,k)
 
 end
 
---local org_meta=exlist_meta
 function create(self,...)
 	local t={}
---	local meta={__index=org_meta.indexvalue}
---	setmetatable(meta,{__index=org_meta})
---	setmetatable(t,meta)
 	local meta={__index=self.indexvalue}
 	setmetatable(t,meta)
 	t:extend(self,...)

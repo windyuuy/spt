@@ -7,14 +7,14 @@ requirelist({
 
 local function main()
 	sheet('kkk')
-	lfs.chdir('./src/test')
+--	lfs.chdir('./src/test')
 
 	--	print('klwjlej')
-	runner.runfile('rule.rd')
+	runner.runfile('./test/rule.rd')
 	--	local f=io.open('rule.rd')
 	--	runner.runcontent(f:lines())
 
-	local hf=io.open('hello.c')
+	local hf=io.open('./test/hello.c')
 	local info=lineinfo:create(hf:lines()())
 
 	result=dd:check(info)

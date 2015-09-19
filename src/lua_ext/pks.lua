@@ -29,6 +29,8 @@ function require_tests(list,pkname)
 	return true
 end
 
+local package_register=package.loaded
+
 function load(name,pkname)
 	pkname=get_pkname(pkname)
 	local back=_G[name]
@@ -49,16 +51,14 @@ function module(name,f)
 	}
 	mod_env._M=mod_env
 	mod_env[name]=mod_env
-	--	setmetatable(mod_env,{__index=_G})
 	if(f)then
 		f(mod_env)
 	end
-	package.loaded[name]=mod_env
+	
+	package_register[name]=mod_env
 	setfenv(2,mod_env)
 	_G[name]=mod_env
 end
-
-local package_register=package.loaded
 
 function create_raw_loader(config)
 	local preset_path_list=config.preset_path_list
@@ -66,53 +66,44 @@ function create_raw_loader(config)
 	local inline_mod_name=config.inline_mod_name
 	local module_loader=config.module_loader
 	local package_register=config.package_register
-	
+
+	local function getname(name)
+		return name:match('^.-/([^/\\]+)$') or name
+	end
+
 	for k,v in ipairs(preset_path_list) do
-		if(string.match(v,'[^/\\]$'))then
+		if(getname(v))then
 			preset_path_list[k]=v..'/'
 		end
 	end
 
 	local function _get_loaded_module(mod_full_path)
-		mod_full_path=mod_full_path:gsub('[/\\]\s+[/\\]+','/')
-		mod_full_path=mod_full_path:gsub('[/\\]+','/')
-		return package_register[mod_full_path]
+		return package_register[fspath.tidy_path(mod_full_path)]
 	end
 
 	local function raw_load(name,level,caller_path)
+		assert(name)
+
 		level=getflevel(level)
-		--		level=2
-		name=name or ''
-		local mod_name=name:match('[\.](%w+)$') or name
-		name=name:gsub('[\.]','/')
-		if(caller_path)then
---			caller_path=lfs.absolute_path(caller_path)
-		else
-			local caller_info=debug.getinfo(level)
-			caller_path=caller_info.source
-		end
-		local sub_path=caller_path:match('^@?(.*[^/]+)[\.]%w+') or caller_path
-		local caller_mod_path=sub_path:gsub('^@?(.-/)[^/]+$','%1')
-		local caller_name=sub_path:sub(caller_mod_path:len()+1)
+
+		name=fspath.pathstyle_of_modstyle(name)
+		local mod_name=fspath.purename(name)
+
+		caller_path=caller_path or fspath.get_callerpath(level)
+		local sub_dir=fspath.purepath(caller_path)
+		local caller_mod_dir=fspath.dir(caller_path)
+		local caller_name=fspath.purename(caller_path)
 		if(caller_name==inline_mod_name)then
-			caller_name=caller_mod_path:match('/([^/]+)/$')
-			sub_path=caller_mod_path
-			caller_mod_path=caller_mod_path:sub(1,caller_mod_path:len()-caller_name:len()-2)
+			sub_dir=caller_mod_dir
+			caller_mod_dir=fspath.parentdir(caller_mod_dir)
+			caller_name=fspath.curfoldername(caller_mod_dir)
 		end
 
 		local path_list={
-			sub_path,
-			caller_mod_path,
-		--		_root_path,
+			sub_dir,
+			caller_mod_dir,
 		}
 		table.iextend(path_list,preset_path_list)
-
-		--	local ext_list={
-		--		'.lua',
-		--		'.so',
-		--		'/init.lua',
-		--		'/init.so',
-		--	}
 
 		local mod_full_path,loaded_module,mod_exist
 		for _,lpath in ipairs(path_list)do
@@ -130,6 +121,7 @@ function create_raw_loader(config)
 		end
 
 		if(not mod_exist)then
+			assert(false)
 			return nil,false
 		end
 
@@ -145,7 +137,6 @@ local function module_loader(mod_full_path,mod_name,name,level)
 	level=getflevel(level)
 
 	local var_org=_G[mod_name]
-	assert(var_org==nil)
 	local mod=loadfile(mod_full_path)
 	local result
 
@@ -160,21 +151,24 @@ local function module_loader(mod_full_path,mod_name,name,level)
 		setmetatable(mod_env,{__index=_G})
 		setfenv(mod,mod_env)
 		result=mod()
-		
+
 		if(type(_G[mod_name])=='table' and _G[mod_name]._M==_G[mod_name])then
 			using_module_func=true
 			mod_env=_G[mod_name]
 		end
-			
+
 		if(result==nil)then
 			result=mod_env
 		end
 	end
+	assert(var_org==nil or var_org==result)
+
+	mod_full_path=fspath.tidy_path(mod_full_path)
 	package_register[mod_full_path]=result
 
-	if(type(result)=='table' and getmetatable(result)==_G)then
-		setmetatable(result,nil)
-	end
+--	if(type(result)=='table' and getmetatable(result).__index==_G)then
+--		setmetatable(result,nil)
+--	end
 
 	local caller_env=getfenv(level)
 	if(type(caller_env)=='table' or type(caller_env)=='userdata')then
