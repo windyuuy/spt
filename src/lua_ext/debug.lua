@@ -144,3 +144,13 @@ function log(tip)
 	print(tip)
 	print('@@')
 end
+
+function register_to_fenv(level,name,value)
+	assert(name)
+	
+	level=getflevel(level)
+	local caller_env=getfenv(level)
+	if(type(caller_env)=='table' or type(caller_env)=='userdata')then
+		caller_env[name]=value
+	end
+end

@@ -86,8 +86,8 @@ function create_raw_loader(config)
 
 		level=getflevel(level)
 
-		name=fspath.pathstyle_of_modstyle(name)
-		local mod_name=fspath.purename(name)
+		local given_mod_path=fspath.pathstyle_of_modstyle(name)
+		local mod_name=fspath.purename(given_mod_path)
 
 		caller_path=caller_path or fspath.get_callerpath(level)
 		local sub_dir=fspath.purepath(caller_path)
@@ -108,9 +108,12 @@ function create_raw_loader(config)
 		local mod_full_path,loaded_module,mod_exist
 		for _,lpath in ipairs(path_list)do
 			for _,ext in ipairs(ext_list)do
-				mod_full_path=lpath..name..ext
+				mod_full_path=lpath..given_mod_path..ext
 				loaded_module=_get_loaded_module(mod_full_path)
-				if(loaded_module~=nil)then return loaded_module,true end
+				if(loaded_module~=nil)then
+					register_to_fenv(level,mod_name,loaded_module)
+					return loaded_module,true
+				end
 
 				if(lfs.exist(mod_full_path))then
 					mod_exist=true
@@ -121,11 +124,13 @@ function create_raw_loader(config)
 		end
 
 		if(not mod_exist)then
+			look(path_list)
+			error('raw load module failed: '..name..' dosen\'t exist',2)
 			assert(false)
 			return nil,false
 		end
 
-		local result=module_loader(mod_full_path,mod_name,name,level)
+		local result=module_loader(mod_full_path,mod_name,given_mod_path,level)
 
 		return result,true
 
@@ -170,10 +175,7 @@ local function module_loader(mod_full_path,mod_name,name,level)
 --		setmetatable(result,nil)
 --	end
 
-	local caller_env=getfenv(level)
-	if(type(caller_env)=='table' or type(caller_env)=='userdata')then
-		caller_env[mod_name]=result
-	end
+	register_to_fenv(level,mod_name,result)
 
 	return result
 end
