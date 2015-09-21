@@ -92,6 +92,7 @@ function parse(self,line)
 	-- 5). name(alias) -> name:create(alias
 	--10). $chars(name){/.../} -> cho_chars('...',
 	--0). {/.../} -> cho_chars('...',
+	--11). [/`...`/] -> cho_regular('...',
 	-- 1). [/.../ /.../] -> cho_rstr('...'),cho_rstr('...')
 	-- 6). [] -> ,nil)
 	-- 7). [(),()] -> ,{{},{}})
@@ -114,6 +115,11 @@ function parse(self,line)
 	--0). {/.../} -> cho_chars('...',
 	sline=gsub(sline,'{/(.-)([(\\\\)]-)/}[[]',"ch_charset('%1%2',nil[")
 
+	-- 1). [/`...`/ /`...`/] -> cho_regular('...'),cho_regular('...')
+	--	sline=gsub(sline,'`/ /`',"'),cho_regular('")
+	sline=gsub(sline,'[[]`^/',"cho_regular('")
+	sline=gsub(sline,'('..str_zend_reg..')`/]',"%1')")
+	
 	-- 1). [/.../ /.../] -> cho_rstr('...'),cho_rstr('...')
 	--	sline=gsub(sline,'/ /',"'),cho_rstr('")
 	sline=gsub(sline,'[[]/',"cho_rstr('")
@@ -130,6 +136,7 @@ function parse(self,line)
 	sline=gsub(sline,'[[]',',{')
 	sline=gsub(sline,']','})')
 
+	sline=gsub(sline,'/ `^/',"'),cho_regular('")
 	sline=gsub(sline,'/ /',"'),cho_rstr('")
 
 	-- 8). (, -> (nil,

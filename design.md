@@ -72,6 +72,7 @@ ion,checker_not:create({ch_hello})})})
 	9.parse_result_index	=result.... -> =result:index('...')
 	10.loadstring
 	11.loadfile
+	12.parse_regular_checker [`^...] -> ch_regular('...')
 	
 
 frame-run{checker->parser->runtime-coder}
@@ -82,3 +83,15 @@ frame-run{checker->parser->runtime-coder}
 从外部增加组件
 丰富库
 稳固测试
+lisp(scheme or clojure) style
+
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-----			plan		----->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+regular-map with ui or ui-interface[input,output]:
+	1.visio? shell? mind_manager? onenote? notepad?
+
+
+regular-tree(line-or-reg(filt_set-and-not){logic-sign:$@#})
+
+grammar-tree-template
