@@ -46,6 +46,12 @@ function arrange_count_ranges(count_ranges)
 			if(v=='n')then
 				max='+'
 				min='-'
+			elseif(v=='?')then
+				max=1
+				min=0
+			elseif(v=='+')then
+				max='+'
+				min='1'
 			end
 			count_ranges[k]={min,max}
 		end

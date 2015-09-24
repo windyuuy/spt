@@ -74,8 +74,16 @@ ion,checker_not:create({ch_hello})})})
 	11.loadfile
 	12.parse_regular_checker [`^...] -> ch_regular('...')
 	
+pre-convert:
+	1.自顶向下引用
+	2.内嵌
 
 frame-run{checker->parser->runtime-coder}
+
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-----			improve		----->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+1.补加recursion功能并详测
+
 
 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-----			over		----->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 

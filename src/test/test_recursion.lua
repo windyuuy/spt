@@ -1,7 +1,9 @@
 
 require('lua_ext')
 
-require('checker')
+requirelist({
+	'checker','sparser',
+})
 
 local function main()
 	local ch_hello=ch_str('hello')
@@ -13,6 +15,8 @@ local function main()
 	recursion:set_recursor(ch_line)
 
 	-- ch_line=$line{[/hello/],$or{$$ch_line,$not{ch_hello}}}
+	local raw_ch_line=runner.parseline('$line{[/hello/],$or{$$ch_line,$not{ch_hello}}}')
+	print(raw_ch_line)
 
 	local info_hello=lineinfo:create('hellohellohellohelloworld')
 

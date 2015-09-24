@@ -99,8 +99,15 @@ function parse(self,line)
 	-- 8). (, -> (nil,
 	-- 9). whitespace -> ,
 
+	-- collect recursor names
+	local recursion_name_list={}
+	for name in string.gmatch(sline,'$$('..WORD_PATTERN..')')do
+		recursion_name_list[#recursion_name_list+1]=name
+	end
+	local in_recursion=(#recursion_name_list>0)
+	
 	-- 2). $$name -> recursion
-	sline=gsub(sline,'$$'..WORD_PATTERN..'','recursion')
+	sline=gsub(sline,'$$'..'('..WORD_PATTERN..')'..'','recursion_%1')
 
 	-- 3). (-,+) -> ('-','+')
 	sline=gsub(sline,'([(,])([+-])([),])',"%1'%2'%3")
@@ -147,6 +154,10 @@ function parse(self,line)
 
 	if(result)then
 		sline=table.concat({markline,'=',sline})
+	end
+	
+	if(in_recursion and #recursion_name_list>0)then
+--		if
 	end
 	return sline
 end
