@@ -14,8 +14,10 @@ local function get_pwd()
 end
 local function get_project_dir()
 	local pwd=get_pwd()
-	local driver=string.gsub(pwd,'^/cygdrive/([^/]+)(/.+)','%1')
-	local addition=string.gsub(pwd,'^/cygdrive/([^/]+)(/.+)','%2')
+	pwd=string.gsub(pwd,'\\','/')
+	pwd=string.gsub(pwd,'//','/')
+	local driver=string.match(pwd,'^/cygdrive/([^/]+)/.+$')
+	local addition=string.match(pwd,'^/cygdrive/[^/]+(/.+)$')
 	pwd=(driver and string.upper(driver)..':'..addition) or pwd
 --	pwd=string.match(pwd,'^\@(.+)[\\/].+[\\/].+$',init)
 	pwd=pwd..'/'
@@ -30,7 +32,7 @@ local default_pj_dir=( platform=='win32' and 'F:/User/workspace/gdh/spt/')
 _project_path=get_project_dir() or default_pj_dir
 _root_path=_project_path..'src/'
 
-print(_project_path)
+print('project path :',_project_path)
 
 _rd_config={
 	preset_rd_path_list={
