@@ -3,12 +3,8 @@ _DEBUG=1
 --_root_path='/home/happy/workspace/spt/src/'
 local function get_pwd()
 	local cur_dir
-	
-	local pipe=io.popen('pwd','r')
-	cur_dir=pipe:read('*l')
-	pipe:close()
 
-	assert(cur_dir~=nil and cur_dir~="",'pwd is invalid')
+	cur_dir=debug.getinfo(1,'S').source:sub(2)
 
 	return cur_dir
 end
@@ -16,10 +12,15 @@ local function get_project_dir()
 	local pwd=get_pwd()
 	pwd=string.gsub(pwd,'\\','/')
 	pwd=string.gsub(pwd,'//','/')
-	local driver=string.match(pwd,'^/cygdrive/([^/]+)/.+$')
-	local addition=string.match(pwd,'^/cygdrive/[^/]+(/.+)$')
-	pwd=(driver and string.upper(driver)..':'..addition) or pwd
---	pwd=string.match(pwd,'^\@(.+)[\\/].+[\\/].+$',init)
+	print(pwd)
+	pwd=string.match(pwd,'^(.+)/[^/]+/[^/]+/[^/]+$')
+	print(pwd)
+	if(string.match(pwd,'^/cygdrive'))then
+		local driver=string.match(pwd,'^/cygdrive/([^/]+)/.+$')
+		local addition=string.match(pwd,'^/cygdrive/[^/]+(/.+)$')
+		pwd=(driver and string.upper(driver)..':'..addition) or pwd
+	end
+	--	pwd=string.match(pwd,'^\@(.+)[\\/].+[\\/].+$',init)
 	pwd=pwd..'/'
 	return pwd
 end
