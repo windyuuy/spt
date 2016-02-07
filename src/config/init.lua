@@ -12,9 +12,7 @@ local function get_project_dir()
 	local pwd=get_pwd()
 	pwd=string.gsub(pwd,'\\','/')
 	pwd=string.gsub(pwd,'//','/')
-	print(pwd)
 	pwd=string.match(pwd,'^(.+)/[^/]+/[^/]+/[^/]+$')
-	print(pwd)
 	if(string.match(pwd,'^/cygdrive'))then
 		local driver=string.match(pwd,'^/cygdrive/([^/]+)/.+$')
 		local addition=string.match(pwd,'^/cygdrive/[^/]+(/.+)$')
@@ -33,7 +31,7 @@ local default_pj_dir=( platform=='win32' and 'F:/User/workspace/gdh/spt/')
 _project_path=get_project_dir() or default_pj_dir
 _root_path=_project_path..'src/'
 
-print('project path :',_project_path)
+--print('project path :',_project_path)
 
 _rd_config={
 	preset_rd_path_list={
